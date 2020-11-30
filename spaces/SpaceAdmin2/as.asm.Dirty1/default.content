@@ -1,0 +1,59 @@
+<ActivityStreamModel description="" name="Dirty1" timezone="Asia/Shanghai" daylight="false" live="true">
+  <ModelInfo validated="true">
+    <Source>
+      <DataSource type="FileSource">
+        <property label="File Path" type="string" name="file" desc="The log4j main log file path" value="http://10.101.7.45:8080/vitria-oi/app/#"/>
+        <property optional="true" label="Rollover File Pattern" type="string" name="rolloverPattern" desc="The log4j rollover file name pattern. It can be a wildcard pattern that supports &apos;*&apos; and &apos;?&apos; or a regular expression. If it is not defined, it will be the file name suffixed with * (wildcard) or .* (regular expression)"/>
+        <property optional="true" label="Pattern Is Regex" type="boolean" value="false" name="isRegex" desc="By default, the rollover file pattern is wildcard. If it is set to true, the rollover file pattern is regular expression"/>
+        <property optional="true" label="Ignore First Line" type="boolean" value="false" name="ignoreFirstLine" desc="If it is set to true, the first line event of the file will be ignored"/>
+        <property constraints="encoding" optional="true" label="File Encoding" type="string" value="utf-8" name="fileEncoding" desc="The file encoding"/>
+        <property hidden="false" description="Whether to support Multi Line Event" label="Multi Line Event" type="boolean" value="false" name="multiline" desc="Whether to support Multi Line Event"/>
+        <property controlName="multiline" contorlValue="true" description="Whether to support Nested Delimiter" label="Nested Delimiter" type="boolean" value="false" name="nesteddel" desc="Whether to support Nested Delimiter"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="Max Number of Characters in Event" label="Max Event Length" type="number" value="1000" name="maxCharacterNum" desc="Max Number of Characters in Event" numberType="int"/>
+        <property controlName="multiline" contorlValue="true" description="Case Sensitive of Delimiters" label="Case Sensitive" type="boolean" value="true" name="caseSensitive" desc="Case Sensitive of Delimiters"/>
+        <property controlName="multiline" contorlValue="true" optional="true" label="Keep CRLF" type="boolean" value="false" name="keepcrlf" desc="Whether preserve CRLF in the event during runtime"/>
+        <property constraints="xmlMap(columnlabel1:Start, columnlabel2:End)" controlName="multiline" contorlValue="true" optional="true" description="The Special Literal Pair" label="Special Literal" type="xmldom" name="specialLiteral" desc="The start and end Special Literal Pair"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="The start Comment String" label="Start Comment" type="string" name="startComment" desc="The start Comment String"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="The end Comment String" label="End Comment" type="string" name="endComment" desc="The end Comment String"/>
+        <property controlName="multiline" contorlValue="true" optional="true" label="Escaped Character" type="string" name="escapedCharacter" desc="The Escaped Character when search Special Literal and Comment"/>
+        <property controlName="multiline" contorlValue="true" label="Start Delimiter" type="boolean" value="true" name="hasStartdel" desc="Select True if need Start Delimiter"/>
+        <property controlName="hasStartdel" contorlValue="true" optional="true" label="Delimiter String" type="string" name="startdel" desc="Start Delimiter String"/>
+        <property controlName="hasStartdel" contorlValue="true" description="Include Start Delimiter in Event" label="Include" type="boolean" value="true" name="startdelInclude" desc="Include Start Delimiter in Event"/>
+        <property controlName="hasStartdel" contorlValue="true" description="Support regular expression as Start Delimiter" label="Regular Expression" type="boolean" value="false" name="startdelReg" desc="Support regular expression as Start Delimiter"/>
+        <property controlName="multiline" contorlValue="true" label="End Delimiter" type="boolean" value="true" name="hasEnddel" desc="Select True if need End Delimiter"/>
+        <property controlName="hasEnddel" contorlValue="true" optional="true" label="Delimiter String" type="string" name="enddel" desc="End Delimiter String"/>
+        <property controlName="hasEnddel" contorlValue="true" description="Include End Delimiter in Event" label="Include" type="boolean" value="true" name="enddelInclude" desc="Include End Delimiter in Event"/>
+        <property controlName="hasEnddel" contorlValue="true" description="Support regular expression as End Delimiter" label="Regular Expression" type="boolean" value="false" name="enddelReg" desc="Support regular expression as End Delimiter"/>
+      </DataSource>
+      <Filter type="expression">
+        <property name="filter-operation" type="string" value="RegExp"/>
+        <property name="filter-argument" type="string" value=""/>
+      </Filter>
+    <Samples type="acquire">
+    </Samples>
+    </Source>
+    <GlobalProperties><![CDATA[
+[]
+    ]]>
+    </GlobalProperties>
+    <DeletedNamespaces>
+    </DeletedNamespaces>
+    <UserSchemas>
+    </UserSchemas>
+    <DeploymentSetting>
+      <ServerTag value=""/>
+      <DataSource value="/vitria/m3o/datasource/DefaultDomain/defaultds"/>
+      <QOS value="0"/>
+      <AdvancedProperties>
+        <property componentType="FileSource" batch_size="1000" dataflow_throttling_policy="slowdown" batch_time="200" modelComponentType="FileSource" componentGroup="Source" componentCategory="source" componentName="AS_Source_Source" enable_monitor="true" dataflow_eps_limit="-1" poll_rate="1000"/>
+      </AdvancedProperties>
+      <ExceptionCondition act="skip" logException="true" logEvent="true">
+        <Source retry="5" delay="5" timeunit="second"/>
+        <Target retry="5" delay="5" timeunit="second"/>
+      </ExceptionCondition>
+    <Binding><![CDATA[
+{}
+    ]]></Binding>
+    </DeploymentSetting>
+  </ModelInfo>
+</ActivityStreamModel>

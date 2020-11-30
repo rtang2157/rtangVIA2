@@ -1,0 +1,100 @@
+VITR00156480,Others,3,"Functional, Work-Around",cyou,3,Normal Queue,2/26/2010 1:19,dowang,Assigned
+VITR00156480,BPMN Engine,3,"Functional, Work-Around",cyou,3,Normal Queue,3/10/2010 19:59,dowang,Assigned
+VITR00156480,Others,3,"Functional, Work-Around",cyou,3,Normal Queue,7/29/2010 2:02,zliu,Assigned
+VITR00160276,BPMN Engine,4,Defect with Minor Impact,jpliu,3,Normal Queue,7/28/2010 20:53,zliu,Assigned
+VITR00160581,Dynamic WebServices,4,Defect with Minor Impact,tdegen,3,Normal Queue,8/17/2010 3:24,zliu,Assigned
+VITR00160690,Others,4,Defect with Minor Impact,jpliu,3,Normal Queue,8/23/2010 2:23,zliu,Assigned
+VITR00156134,BPMN Engine,5,Enhancement Request,aqin,2,Give High Attention,8/17/2010 20:31,zliu,Assigned
+VITR00160380,Script Engine,5,Enhancement Request,qwan,2,Give High Attention,6/18/2010 0:17,zliu,Assigned
+VITR00160785,Virtual Server,3,"Functional, Work-Around",yzhou,2,Give High Attention,8/1/2010 8:00,zliu,Assigned
+VITR00160922,BPMN Engine,2,"Functional, No Work-Around",qwan,2,Give High Attention,8/23/2010 4:08,zliu,Assigned
+VITR00160972,Virtual Server,4,Defect with Minor Impact,jpliu,2,Give High Attention,8/30/2010 19:46,zliu,Assigned
+VITR00160984,BPMN Engine,4,Defect with Minor Impact,huyang,2,Give High Attention,8/31/2010 23:04,zliu,Assigned
+VITR00161073,BPMN Engine,2,"Functional, No Work-Around",sli,2,Give High Attention,10/23/2010 23:42,zliu,Assigned
+VITR00161139,Virtual Server,4,Defect with Minor Impact,aleczhang,2,Give High Attention,10/27/2010 0:28,zliu,Assigned
+VITR00161168,Virtual Server,1,"Crash, Data Loss or Hang",bguo,2,Give High Attention,10/24/2010 0:57,zliu,Assigned
+VITR00161406,Dynamic WebServices,2,"Functional, No Work-Around",huyang,2,Give High Attention,10/24/2010 19:30,zliu,Assigned
+VITR00162570,Dynamic WebServices,2,"Functional, No Work-Around",qzuo,2,Give High Attention,11/23/2010 23:52,zliu,Assigned
+VITR00162804,Virtual Server,2,"Functional, No Work-Around",jhe3,2,Give High Attention,11/30/2010 19:15,zliu,Assigned
+VITR00163145,BPMN Engine,3,"Functional, Work-Around",qwan,2,Give High Attention,12/26/2010 1:58,zliu,Assigned
+VITR00163350,Dynamic WebServices,5,Enhancement Request,jpliu,2,Give High Attention,12/27/2010 6:26,zliu,Assigned
+VITR00163940,BPMN Engine,2,"Functional, No Work-Around",ronat,2,Give High Attention,1/14/2011 3:17,zliu,Assigned
+VITR00164145,BPMN Engine,2,"Functional, No Work-Around",aleczhang,2,Give High Attention,1/20/2011 0:13,zliu,Assigned
+VITR00164455,Virtual Server,2,"Functional, No Work-Around",aleczhang,2,Give High Attention,2/16/2011 22:34,zliu,Assigned
+VITR00165042,Others,2,"Functional, No Work-Around",sxu,2,Give High Attention,3/20/2011 21:37,zliu,Assigned
+VITR00166130,Dynamic Connector,2,"Functional, No Work-Around",sxu,2,Give High Attention,5/3/2011 20:40,zliu,Assigned
+VITR00159284,BPMN Engine,4,Defect with Minor Impact,qwan,3,Normal Queue,6/22/2010 23:40,zliu,Assigned
+VITR00161077,BPMN Engine,2,"Functional, No Work-Around",sli,3,Normal Queue,10/27/2010 7:18,zliu,Assigned
+VITR00162382,BPMN Engine,3,"Functional, Work-Around",sli,3,Normal Queue,11/23/2010 0:36,zliu,Assigned
+VITR00162550,BPMN Engine,3,"Functional, Work-Around",sli,3,Normal Queue,11/27/2010 9:23,zliu,Assigned
+VITR00163158,BPMN Engine,2,"Functional, No Work-Around",ftu,3,Normal Queue,12/26/2010 1:57,zliu,Assigned
+VITR00163494,Others,5,Enhancement Request,awang,3,Normal Queue,12/27/2010 6:14,zliu,Assigned
+VITR00163494,Others,5,Enhancement Request,awang,3,Normal Queue,12/27/2010 6:18,zliu,Assigned
+VITR00163771,Feed Server,5,Enhancement Request,aqin,3,Normal Queue,1/10/2011 23:31,zliu,Assigned
+VITR00163847,Virtual Server,4,Defect with Minor Impact,sli,3,Normal Queue,1/13/2011 7:47,zliu,Assigned
+VITR00163901,Virtual Server,4,Defect with Minor Impact,chill,3,Normal Queue,1/10/2011 23:25,zliu,Assigned
+VITR00163951,Virtual Server,3,"Functional, Work-Around",dxia,3,Normal Queue,1/13/2011 7:46,zliu,Assigned
+VITR00164774,BPMN Engine,3,"Functional, Work-Around",qwan,3,Normal Queue,3/11/2011 1:35,zliu,Assigned
+VITR00164855,BPMN Engine,3,"Functional, Work-Around",rzhou,3,Normal Queue,3/11/2011 8:46,zliu,Assigned
+VITR00165048,Feed Server,3,"Functional, Work-Around",wzhi,3,Normal Queue,3/19/2011 9:18,zliu,Assigned
+VITR00165048,Feed Server,3,"Functional, Work-Around",wzhi,3,Normal Queue,4/1/2011 0:51,zliu,Assigned
+VITR00165504,Virtual Server,3,"Functional, Work-Around",gling,3,Normal Queue,4/1/2011 3:31,zliu,Assigned
+VITR00165826,Virtual Server,3,"Functional, Work-Around",JianHuang,3,Normal Queue,4/18/2011 8:30,zliu,Assigned
+VITR00165837,Virtual Server,3,"Functional, Work-Around",qwan,3,Normal Queue,4/19/2011 22:28,zliu,Assigned
+VITR00165840,Virtual Server,5,Enhancement Request,zliu,3,Normal Queue,4/18/2011 23:32,zliu,Assigned
+VITR00165951,Virtual Server,4,Defect with Minor Impact,jpliu,3,Normal Queue,4/21/2011 23:40,zliu,Assigned
+VITR00166011,Virtual Server,3,"Functional, Work-Around",cyou,3,Normal Queue,4/26/2011 7:44,zliu,Assigned
+VITR00166021,Virtual Server,3,"Functional, Work-Around",aleczhang,3,Normal Queue,4/29/2011 2:50,zliu,Assigned
+VITR00160643,BPMN Engine,2,"Functional, No Work-Around",sxu,2,Give High Attention,7/8/2010 23:33,rhan,Assigned
+VITR00159127,BPMN Engine,2,"Functional, No Work-Around",jpliu,2,Give High Attention,6/27/2010 20:31,wxu,Assigned
+VITR00159393,Others,2,"Functional, No Work-Around",dxia,2,Give High Attention,5/13/2010 2:15,zliu,Assigned
+VITR00160676,Others,2,"Functional, No Work-Around",ytu,2,Give High Attention,7/19/2010 4:14,zliu,Assigned
+VITR00160734,Feed Server,2,"Functional, No Work-Around",PZhang,2,Give High Attention,8/12/2010 23:43,zliu,Assigned
+VITR00157891,Line Connector,5,Enhancement Request,qluo,3,Normal Queue,4/1/2010 9:24,zliu,Assigned
+VITR00157891,Line Connector,5,Enhancement Request,qluo,3,Normal Queue,7/22/2010 19:03,zliu,Assigned
+VITR00159084,Component Server,3,"Functional, Work-Around",ydeng,3,Normal Queue,7/12/2010 0:47,zliu,Assigned
+VITR00159624,Dynamic WebServices,3,"Functional, Work-Around",kuhua,3,Normal Queue,7/13/2010 5:13,zliu,Assigned
+VITR00159627,Dynamic WebServices,4,Defect with Minor Impact,kuhua,3,Normal Queue,7/13/2010 5:11,zliu,Assigned
+VITR00160350,BPMN Engine,3,"Functional, Work-Around",sli,3,Normal Queue,7/12/2010 3:08,zliu,Assigned
+VITR00160350,BPMN Engine,3,"Functional, Work-Around",sli,3,Normal Queue,7/12/2010 3:09,zliu,Assigned
+VITR00160351,Others,4,Defect with Minor Impact,jpliu,3,Normal Queue,7/12/2010 0:59,zliu,Assigned
+VITR00160569,Others,3,"Functional, Work-Around",akso,0,Patch Requested,6/29/2010 21:44,zliu,Assigned
+VITR00159150,Feed Server,3,"Functional, Work-Around",jpliu,2,Give High Attention,11/8/2010 2:02,zliu,Assigned
+VITR00159174,Feed Server,3,"Functional, Work-Around",yyu,2,Give High Attention,10/28/2010 23:26,zliu,Assigned
+VITR00159275,Feed Server,3,"Functional, Work-Around",awang,2,Give High Attention,5/14/2010 8:24,zliu,Assigned
+VITR00159275,Feed Server,3,"Functional, Work-Around",awang,2,Give High Attention,5/16/2010 22:31,awang,Assigned
+VITR00159478,Feed Server,3,"Functional, Work-Around",gzhang,2,Give High Attention,5/14/2010 9:12,zliu,Assigned
+VITR00160833,Feed Server,2,"Functional, No Work-Around",yzhou,2,Give High Attention,9/6/2010 4:19,zliu,Assigned
+VITR00160974,Feed Server,2,"Functional, No Work-Around",jpliu,2,Give High Attention,9/6/2010 3:57,zliu,Assigned
+VITR00161025,Feed Server,2,"Functional, No Work-Around",gling,2,Give High Attention,9/6/2010 3:59,zliu,Assigned
+VITR00161080,Feed Server,2,"Functional, No Work-Around",sli,2,Give High Attention,10/24/2010 0:20,zliu,Assigned
+VITR00161100,Feed Server,2,"Functional, No Work-Around",gling,2,Give High Attention,9/14/2010 1:27,zliu,Assigned
+VITR00161160,Feed Server,4,Defect with Minor Impact,jpliu,2,Give High Attention,10/20/2010 7:22,zliu,Assigned
+VITR00161408,Feed Server,2,"Functional, No Work-Around",bxu,2,Give High Attention,11/2/2010 1:27,zliu,Assigned
+VITR00162013,Feed Server,2,"Functional, No Work-Around",dxia,2,Give High Attention,11/9/2010 0:01,zliu,Assigned
+VITR00162903,Feed Server,2,"Functional, No Work-Around",jpliu,2,Give High Attention,12/6/2010 3:08,zliu,Assigned
+VITR00163610,Rules Engine,2,"Functional, No Work-Around",llin,2,Give High Attention,1/3/2011 1:52,zliu,Assigned
+VITR00163610,Rules Engine,2,"Functional, No Work-Around",llin,2,Give High Attention,1/13/2011 20:23,zliu,Assigned
+VITR00163639,Component Server,2,"Functional, No Work-Around",awang,2,Give High Attention,1/3/2011 1:36,zliu,Assigned
+VITR00164400,Feed Server,2,"Functional, No Work-Around",yzhou,2,Give High Attention,2/15/2011 0:51,zliu,Assigned
+VITR00165788,Feed Server,1,"Crash, Data Loss or Hang",dmcpherson,2,Give High Attention,4/15/2011 5:30,zliu,Assigned
+VITR00166123,Feed Server,3,"Functional, Work-Around",gling,2,Give High Attention,4/29/2011 3:23,zliu,Assigned
+VITR00160973,Feed Server,4,Defect with Minor Impact,jpliu,3,Normal Queue,9/6/2010 4:03,zliu,Assigned
+VITR00161026,Feed Server,4,Defect with Minor Impact,aleczhang,3,Normal Queue,10/27/2010 7:58,zliu,Assigned
+VITR00161074,Feed Server,5,Enhancement Request,sli,3,Normal Queue,10/27/2010 7:48,zliu,Assigned
+VITR00161076,Feed Server,2,"Functional, No Work-Around",sli,3,Normal Queue,10/27/2010 7:47,zliu,Assigned
+VITR00161078,Feed Server,2,"Functional, No Work-Around",sli,3,Normal Queue,10/27/2010 7:45,zliu,Assigned
+VITR00161078,Feed Server,2,"Functional, No Work-Around",sli,3,Normal Queue,11/21/2010 18:51,sli,Assigned
+VITR00161079,Feed Server,2,"Functional, No Work-Around",sli,3,Normal Queue,10/27/2010 7:45,zliu,Assigned
+VITR00161083,Feed Server,2,"Functional, No Work-Around",sli,3,Normal Queue,10/27/2010 7:43,zliu,Assigned
+VITR00161129,Feed Server,4,Defect with Minor Impact,jpliu,3,Normal Queue,10/27/2010 7:32,zliu,Assigned
+VITR00161999,Feed Server,3,"Functional, Work-Around",czhou,3,Normal Queue,11/4/2010 22:19,ybian,Assigned
+VITR00161999,Feed Server,3,"Functional, Work-Around",czhou,3,Normal Queue,11/7/2010 18:04,zliu,Assigned
+VITR00162003,Feed Server,2,"Functional, No Work-Around",dxia,3,Normal Queue,11/8/2010 23:45,zliu,Assigned
+VITR00162042,Feed Server,3,"Functional, Work-Around",dxia,3,Normal Queue,11/12/2010 0:40,zliu,Assigned
+VITR00162281,Feed Server,3,"Functional, Work-Around",qdeng,3,Normal Queue,11/18/2010 23:46,zliu,Assigned
+VITR00162552,Feed Server,5,Enhancement Request,sli,3,Normal Queue,12/19/2010 18:16,zliu,Assigned
+VITR00163263,Feed Server,3,"Functional, Work-Around",kzhang,3,Normal Queue,12/19/2010 21:47,zliu,Assigned
+VITR00164076,Feed Server,4,Defect with Minor Impact,wlu,3,Normal Queue,1/14/2011 3:37,zliu,Assigned
+VITR00164121,Feed Server,3,"Functional, Work-Around",awang,3,Normal Queue,1/29/2011 19:41,zliu,Assigned
+VITR00164404,Feed Server,3,"Functional, Work-Around",yzhou,3,Normal Queue,2/15/2011 1:03,zliu,Assigned
