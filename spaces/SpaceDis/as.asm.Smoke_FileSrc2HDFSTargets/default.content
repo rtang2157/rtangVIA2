@@ -1,0 +1,197 @@
+<ActivityStreamModel description="for smoke" name="Smoke_FileSrc2HDFSTargets" timezone="Asia/Krasnoyarsk" daylight="false" live="true">
+  <ModelInfo validated="true">
+    <Source>
+      <DataSource type="FileSource">
+        <property desc="The log4j main log file path" label="File Path" name="file" type="string" value="/home/qa/rtang/cq.csv"/>
+        <property desc="The log4j rollover file name pattern. It is a wildcard pattern that supports &apos;*&apos; and &apos;?&apos;. If it is not defined, it will be the file name suffixed with *, by default." label="Rollover File Pattern" name="rolloverPattern" optional="true" type="string"/>
+        <property desc="The event delimiter type. It supports line delimiter and multiple line delimited by start and end tag." enums="line=Line,multiline=Multi lines with Start/End," hidden="true" label="Delimiter Type" name="delimiterType" type="string" value="line"/>
+        <property desc="The delimiter start tag" hidden="true" label="Delimiter Start" name="delimiterStart" optional="true" type="string"/>
+        <property desc="The delimiter end tag" hidden="true" label="Delimiter End" name="delimiterEnd" optional="true" type="string"/>
+        <property desc="If it is set to true, the first line event of the file will be ignored" label="Ignore First Line" name="ignoreFirstLine" optional="true" type="boolean" value="false"/>
+        <property constraints="encoding" desc="The file encoding" label="File Encoding" name="fileEncoding" optional="true" type="string" value="utf-8"/>
+      </DataSource>
+      <Filter type="expression">
+        <property name="filter-operation" type="string" value="RegExp"/>
+        <property name="filter-argument" type="string" value=""/>
+      </Filter>
+    <Samples type="acquire">
+      <Sample name="" label="* Source Definition" payloadId="SOURCE" fileName="vt1541570815124" mimeType="txt">
+        <Param name="file" label="undefined" value="sample###txt###0" type="file"/>
+      </Sample>
+    </Samples>
+      <Parser name="DelimittedStringToXMLConverter">
+        <Component type="DelimittedStringToXMLConverter" category="converter">
+          <properties>
+            <property desc="Specify whether to adjust the Datetime if daylight savings time is in effect" hidden="true" label="Daylight savings" name="daylight" optional="true" type="boolean" value="false"/>
+            <property desc="Timezone setting for the Datetime field" hidden="true" label="Timezone" name="timezone" optional="true" type="string" value="Asia/Krasnoyarsk"/>
+            <property desc="Specify whether to consider the first row as a header." label="Header Row" name="headerRow" type="boolean" value="false"/>
+            <property desc="The delimiter used to split strings into fields." enumDyn="true" enums="comma=Comma Separated,tab=Tab Delimited,,," label="Delimiter" name="delimiter" type="string" value="comma"/>
+            <property constraints="((([a-zA-Z][a-zA-Z0-9_]*)|([a-zA-Z][a-zA-Z0-9_]*:[a-zA-Z]+)),)*((([a-zA-Z][a-zA-Z0-9_]*)|([a-zA-Z][a-zA-Z0-9_]*:[a-zA-Z]+)))?" desc="Optional comma-separated list of field names." label="Field Names" name="fieldNames" optional="true" type="string" value="Id,Component,SeverityNum,Severity,Submiter,PriorityNum,Priority,DateTime,Resp,Status"/>
+          </properties>
+        </Component>
+        <Mapping type="auto" namespace="http://as" root="SourceEvent" prefix="n">
+          <group id="declare namespace n=&quot;http://as&quot;; /n:root" label="root/" name="root">
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/Id" label="Id" name="Id" value="VITR00156480" type="string"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/Component" label="Component" name="Component" value="Others" type="string"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/SeverityNum" label="SeverityNum" name="SeverityNum" value="3" type="integer"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/Severity" label="Severity" name="Severity" value="Functional, Work-Around" type="integer"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/Submiter" label="Submiter" name="Submiter" value="cyou" type="string"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/PriorityNum" label="PriorityNum" name="PriorityNum" value="3" type="integer"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/Priority" label="Priority" name="Priority" value="Normal Queue" type="string"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/DateTime" label="DateTime" name="DateTime" value="2/26/2010 1:19" type="datetime" constraints="M/d/yy HH:mm" locale=""/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/Resp" label="Resp" name="Resp" value="dowang" type="string"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/Status" label="Status" name="Status" value="Assigned" type="string"/>
+          </group>
+        </Mapping>
+      </Parser>
+    </Source>
+    <MappingPaths>
+     <path value="Id" label="Id"/>
+     <path value="Component" label="Component"/>
+     <path value="SeverityNum" label="SeverityNum"/>
+     <path value="Severity" label="Severity"/>
+     <path value="Submiter" label="Submiter"/>
+     <path value="PriorityNum" label="PriorityNum"/>
+     <path value="Priority" label="Priority"/>
+     <path value="DateTime" label="DateTime"/>
+     <path value="Resp" label="Resp"/>
+     <path value="Status" label="Status"/>
+    </MappingPaths>
+    <GlobalProperties>
+    </GlobalProperties>
+    <DeletedNamespaces>
+    </DeletedNamespaces>
+    <UserSchemas>
+    </UserSchemas>
+        <View name="View1" desc="">
+        <Rule type="PerEvent"/>
+        <Filters type="expression" relation="AND">
+        </Filters>
+        <Mapping output="xml" type="auto">
+        </Mapping>
+        <Targets>
+           <Target name="Text_AppendLengthBeforeEvent" type="HDFSTarget">
+             <property desc="The host name of the HDFS server" label="HDFS Server" name="server" type="string" value="10.101.7.117"/>
+             <property desc="The port of the HDFS server" label="Port" name="port" type="string" value="9000"/>
+             <property desc="The file/folder full path to write to" label="HDFS File" name="file" type="string" value="/smoke/Text_AppendLengthBeforeEvent"/>
+             <property desc="The file format" enums="map.timestamp=Map Archive File-Timestamp,map.id=Map Archive File-Event ID,text=Text," label="HDFS File Format" name="format" type="string" value="text"/>
+             <property contorlValue="text" controlName="format" desc="" enums="line=Append Line delimiter after event,length=Append Length before event," label="Event Delimiter" name="delimiter" optional="true" type="string" value="length"/>
+             <property constraints="encoding" contorlValue="line" controlName="delimiter" desc="" label="File Encoding" name="fileEncoding" optional="true" type="string" value="UTF-8"/>
+             <property contorlValue="map.timestamp,map.id" controlName="format" desc="The compression type of the map file" enums="NONE=None,BLOCK=Block,RECORD=Record," label="Compression" name="compress" type="string" value="BLOCK"/>
+             <property constraints="fileRollover" contorlValue="map.timestamp,map.id" controlName="format" desc="The rollover policy of the map file" label="Rollover" name="rollover" type="string" value="no"/>
+             <property label="Remove wrapper" name="remove_event_wrapper" type="boolean" value="false"/>
+             <property label="Parse to String" name="###parse_to_string###" type="boolean" value="true"/>
+             <Mapping output="xml" type="auto" input="xml">
+             </Mapping>
+           </Target>
+           <Target name="Text_AppendLineDelimiterAfterEvent" type="HDFSTarget">
+             <property desc="The host name of the HDFS server" label="HDFS Server" name="server" type="string" value="10.101.7.117"/>
+             <property desc="The port of the HDFS server" label="Port" name="port" type="string" value="9000"/>
+             <property desc="The file/folder full path to write to" label="HDFS File" name="file" type="string" value="/smoke/Text_AppendLineDelimiterAfterEvent"/>
+             <property desc="The file format" enums="map.timestamp=Map Archive File-Timestamp,map.id=Map Archive File-Event ID,text=Text," label="HDFS File Format" name="format" type="string" value="text"/>
+             <property contorlValue="text" controlName="format" desc="" enums="line=Append Line delimiter after event,length=Append Length before event," label="Event Delimiter" name="delimiter" optional="true" type="string" value="line"/>
+             <property constraints="encoding" contorlValue="line" controlName="delimiter" desc="" label="File Encoding" name="fileEncoding" optional="true" type="string" value="UTF-8"/>
+             <property contorlValue="map.timestamp,map.id" controlName="format" desc="The compression type of the map file" enums="NONE=None,BLOCK=Block,RECORD=Record," label="Compression" name="compress" type="string" value="BLOCK"/>
+             <property constraints="fileRollover" contorlValue="map.timestamp,map.id" controlName="format" desc="The rollover policy of the map file" label="Rollover" name="rollover" type="string" value="no"/>
+             <property label="Remove wrapper" name="remove_event_wrapper" type="boolean" value="false"/>
+             <property label="Parse to String" name="###parse_to_string###" type="boolean" value="false"/>
+             <Mapping output="xml" type="auto" input="xml">
+             </Mapping>
+           </Target>
+        </Targets>
+    </View>
+        <View name="View2" desc="">
+        <Rule type="PerOccurance" path="declare namespace n=&quot;http://as&quot;; /n:root"/>
+        <Filters type="expression" relation="AND">
+        </Filters>
+        <Mapping output="xml" type="auto">
+        </Mapping>
+        <Targets>
+           <Target name="TS_Record_NRollover_JSON" type="HDFSTarget">
+             <property desc="The host name of the HDFS server" label="HDFS Server" name="server" type="string" value="10.101.7.3"/>
+             <property desc="The port of the HDFS server" label="Port" name="port" type="string" value="9000"/>
+             <property desc="The file/folder full path to write to" label="HDFS File" name="file" type="string" value="/smoke/TS_Record_NRollover_JSON"/>
+             <property desc="The file format" enums="map.timestamp=Map Archive File-Timestamp,map.id=Map Archive File-Event ID,text=Text," label="HDFS File Format" name="format" type="string" value="map.timestamp"/>
+             <property contorlValue="text" controlName="format" desc="" enums="line=Append Line delimiter after event,length=Append Length before event," label="Event Delimiter" name="delimiter" optional="true" type="string" value="length"/>
+             <property constraints="encoding" contorlValue="line" controlName="delimiter" desc="" label="File Encoding" name="fileEncoding" optional="true" type="string" value="UTF-8"/>
+             <property contorlValue="map.timestamp,map.id" controlName="format" desc="The compression type of the map file" enums="NONE=None,BLOCK=Block,RECORD=Record," label="Compression" name="compress" type="string" value="RECORD"/>
+             <property constraints="fileRollover" contorlValue="map.timestamp,map.id" controlName="format" desc="The rollover policy of the map file" label="Rollover" name="rollover" type="string" value="no"/>
+             <property label="Remove wrapper" name="remove_event_wrapper" type="boolean" value="false"/>
+             <property label="Parse to String" name="###parse_to_string###" type="boolean" value="false"/>
+             <Mapping output="json" type="auto" input="xml" rootNode="declare namespace n=&quot;http://as&quot;; /n:root">
+             </Mapping>
+           </Target>
+           <Target name="TS_Block_Rollover1Min" type="HDFSTarget">
+             <property desc="The type of the HDFS server information" description="The type of the HDFS server information" enums="props=HDFS Server Properties,url=HDFS Server URL,resource=HDFS Resource," label="HDFS Server Info" name="serverInfo" type="string" value="props"/>
+             <property contorlValue="props" controlName="serverInfo" desc="The host name of the HDFS server" description="The host name of the HDFS server" label="HDFS Server" name="server" optional="true" type="string" value="10.101.7.3"/>
+             <property contorlValue="props" controlName="serverInfo" desc="The port of the HDFS server" description="The port of the HDFS server" label="Port" name="port" optional="true" type="string" value="9000"/>
+             <property contorlValue="url" controlName="serverInfo" desc="The URL of the HDFS file. Like: hdfs://server:port" description="The URL of the HDFS file. Like: hdfs://server:port" label="HDFS File URL" name="url" optional="true" type="string"/>
+             <property contorlValue="resource" controlName="serverInfo" desc="The HDFS resource name" description="The HDFS resource name" enumSource="rest:/app/event_store/pub/resource?op=listResourceRecords" label="HDFS Resource" name="resource" optional="true" type="string" value="EventStore"/>
+             <property desc="The file/folder full path to write to" description="The file/folder full path to write to" label="HDFS File" name="file" optional="true" type="string" value="/smoke/TS_Block_Rollover1Min"/>
+             <property desc="The file format" description="The file format" enums="map.timestamp=Map Archive File-Timestamp,map.id=Map Archive File-Event ID,text=Text," label="HDFS File Format" name="format" type="string" value="map.timestamp"/>
+             <property contorlValue="map.timestamp,map.id" controlName="format" desc="The compression type of the map file" description="The compression type of the map file" enums="NONE=None,BLOCK=Block,RECORD=Record," label="Compression" name="compress" type="string" value="BLOCK"/>
+             <property contorlValue="text" controlName="format" desc="Event Delimiter" description="Event Delimiter" enums="line=Append Line delimiter after event,length=Append Length before event," label="Event Delimiter" name="delimiter" optional="true" type="string" value="line"/>
+             <property constraints="encoding" contorlValue="line" controlName="delimiter" desc="File Encoding" description="File Encoding" label="File Encoding" name="fileEncoding" optional="true" type="string" value="UTF-8"/>
+             <property contorlValue="line" controlName="delimiter" desc="Whether support boundary events or not" description="Whether support boundary events or not" hidden="true" label="Support Boundary Events" name="supportBoundary" optional="true" type="boolean" value="false"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Inherit delimiter from boundary event" description="Inherit delimiter from boundary event" hidden="true" label="Inherit Delimiter" name="inheritDelimiter" optional="true" type="boolean" value="false"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Inherit encoding from boundary event" description="Inherit encoding from boundary event" hidden="true" label="Inherit Encoding" name="inheritEncoding" optional="true" type="boolean" value="false"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Whether write files to temp folder and move after finished" description="Whether write files to temp folder and move after finished" hidden="true" label="Move File" name="move" optional="true" type="boolean" value="true"/>
+             <property contorlValue="true" controlName="move" desc="The temporary folder to write files to" description="The temporary folder to write files to" hidden="true" label="Temp Folder" name="tempFolder" optional="true" type="string" value="tmp"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Choose whether to zip the output files and which zip type to use" description="Choose whether to zip the output files and which zip type to use" enums="none=None,gzip=GZip," hidden="true" label="Zip Type" name="zipType" optional="true" type="string" value="none"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Choose whether to backup or clean the existing folder" description="Choose whether to backup or clean the existing folder" enums="none=None,backup=Backup,clean=Clean," hidden="true" label="Data Operation" name="dataOperation" optional="true" type="string" value="none"/>
+             <property constraints="fileRolloverPicker" desc="The rollover policy" description="The rollover policy" label="Rollover" name="rollover" type="string" value="{&quot;rollover&quot;:{&quot;time&quot;:&quot;1;M&quot;}}"/>
+             <property label="Remove Wrapper" name="remove_event_wrapper" type="boolean" value="false"/>
+             <property label="Parse to String" name="###parse_to_string###" type="boolean" value="false"/>
+             <Mapping output="xml" type="auto" input="xml">
+             </Mapping>
+           </Target>
+           <Target name="EventID_NoCompression_Rollover10K_JSON" type="HDFSTarget">
+             <property desc="The type of the HDFS server information" description="The type of the HDFS server information" enums="props=HDFS Server Properties,url=HDFS Server URL,resource=HDFS Resource," label="HDFS Server Info" name="serverInfo" type="string" value="props"/>
+             <property contorlValue="props" controlName="serverInfo" desc="The host name of the HDFS server" description="The host name of the HDFS server" label="HDFS Server" name="server" optional="true" type="string" value="10.101.7.3"/>
+             <property contorlValue="props" controlName="serverInfo" desc="The port of the HDFS server" description="The port of the HDFS server" label="Port" name="port" optional="true" type="string" value="9000"/>
+             <property contorlValue="url" controlName="serverInfo" desc="The URL of the HDFS file. Like: hdfs://server:port" description="The URL of the HDFS file. Like: hdfs://server:port" label="HDFS File URL" name="url" optional="true" type="string"/>
+             <property contorlValue="resource" controlName="serverInfo" desc="The HDFS resource name" description="The HDFS resource name" enumSource="rest:/app/event_store/pub/resource?op=listResourceRecords" label="HDFS Resource" name="resource" optional="true" type="string" value="EventStore"/>
+             <property desc="The file/folder full path to write to" description="The file/folder full path to write to" label="HDFS File" name="file" optional="true" type="string" value="/smoke/EventID_NoCompression_Rollover10K_JSON"/>
+             <property desc="The file format" description="The file format" enums="map.timestamp=Map Archive File-Timestamp,map.id=Map Archive File-Event ID,text=Text," label="HDFS File Format" name="format" type="string" value="map.id"/>
+             <property contorlValue="map.timestamp,map.id" controlName="format" desc="The compression type of the map file" description="The compression type of the map file" enums="NONE=None,BLOCK=Block,RECORD=Record," label="Compression" name="compress" type="string" value="NONE"/>
+             <property contorlValue="text" controlName="format" desc="Event Delimiter" description="Event Delimiter" enums="line=Append Line delimiter after event,length=Append Length before event," label="Event Delimiter" name="delimiter" optional="true" type="string" value="line"/>
+             <property constraints="encoding" contorlValue="line" controlName="delimiter" desc="File Encoding" description="File Encoding" label="File Encoding" name="fileEncoding" optional="true" type="string" value="UTF-8"/>
+             <property contorlValue="line" controlName="delimiter" desc="Whether support boundary events or not" description="Whether support boundary events or not" hidden="true" label="Support Boundary Events" name="supportBoundary" optional="true" type="boolean" value="false"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Inherit delimiter from boundary event" description="Inherit delimiter from boundary event" hidden="true" label="Inherit Delimiter" name="inheritDelimiter" optional="true" type="boolean" value="false"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Inherit encoding from boundary event" description="Inherit encoding from boundary event" hidden="true" label="Inherit Encoding" name="inheritEncoding" optional="true" type="boolean" value="false"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Whether write files to temp folder and move after finished" description="Whether write files to temp folder and move after finished" hidden="true" label="Move File" name="move" optional="true" type="boolean" value="true"/>
+             <property contorlValue="true" controlName="move" desc="The temporary folder to write files to" description="The temporary folder to write files to" hidden="true" label="Temp Folder" name="tempFolder" optional="true" type="string" value="tmp"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Choose whether to zip the output files and which zip type to use" description="Choose whether to zip the output files and which zip type to use" enums="none=None,gzip=GZip," hidden="true" label="Zip Type" name="zipType" optional="true" type="string" value="none"/>
+             <property contorlValue="true" controlName="supportBoundary" desc="Choose whether to backup or clean the existing folder" description="Choose whether to backup or clean the existing folder" enums="none=None,backup=Backup,clean=Clean," hidden="true" label="Data Operation" name="dataOperation" optional="true" type="string" value="none"/>
+             <property constraints="fileRolloverPicker" desc="The rollover policy" description="The rollover policy" label="Rollover" name="rollover" type="string" value="{&quot;rollover&quot;:{&quot;count&quot;:&quot;10;k&quot;}}"/>
+             <property label="Remove Wrapper" name="remove_event_wrapper" type="boolean" value="false"/>
+             <property label="Parse to String" name="###parse_to_string###" type="boolean" value="false"/>
+             <Mapping output="json" type="auto" input="xml" rootNode="declare namespace n=&quot;http://as&quot;; /n:root">
+             </Mapping>
+           </Target>
+        </Targets>
+    </View>
+    <DeploymentSetting>
+      <ServerTag value=""/>
+      <DataSource value="/vitria/m3o/datasource/DefaultDomain/defaultds"/>
+      <QOS value="2"/>
+      <AdvancedProperties>
+        <property componentType="FileSource" batch_size="1000" dataflow_throttling_policy="slowdown" batch_time="200" modelComponentType="FileSource" componentGroup="Source" componentCategory="source" componentName="AS_Source_Source" enable_monitor="true" dataflow_eps_limit="800" poll_rate="1000"/>
+        <property componentType="DelimittedStringToXMLConverter" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="DelimittedStringToXMLConverter" componentGroup="" componentCategory="converter" componentName="AS_Source_Converter" enable_monitor="true" dataflow_eps_limit="800" concurrency="0"/>
+        <property componentType="Text_AppendLengthBeforeEvent/UntypeToStringConverter" entry="View1/Text_AppendLengthBeforeEvent" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="UntypeToStringConverter" componentGroup="View1" componentCategory="converter" componentName="AS_Views_View1_Targets_Text_AppendLengthBeforeEvent_Parse_To_String_Converter" enable_monitor="true" dataflow_eps_limit="800" concurrency="0"/>
+        <property componentType="Text_AppendLengthBeforeEvent/HDFSTarget" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="HDFSTarget" componentGroup="" componentCategory="target" componentName="AS_Views_View1_Targets_Text_AppendLengthBeforeEvent_Target" enable_monitor="true" dataflow_eps_limit="800"/>
+        <property componentType="Text_AppendLineDelimiterAfterEvent/HDFSTarget" entry="View1/Text_AppendLineDelimiterAfterEvent" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="HDFSTarget" componentGroup="" componentCategory="target" componentName="AS_Views_View1_Targets_Text_AppendLineDelimiterAfterEvent_Target" enable_monitor="true" dataflow_eps_limit="800"/>
+        <property componentType="XMLSplitter" entry="View2" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="XMLSplitter" componentGroup="View2" componentCategory="splitter" componentName="AS_Views_View2_Splitter" enable_monitor="true" dataflow_eps_limit="800" concurrency="0"/>
+        <property componentType="TS_Record_NRollover_JSON/XMLToJSONConverter" entry="View2/TS_Record_NRollover_JSON" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="XMLToJSONConverter" componentGroup="" componentCategory="converter" componentName="AS_Views_View2_Targets_TS_Record_NRollover_JSON_Converter" enable_monitor="true" dataflow_eps_limit="800" concurrency="0"/>
+        <property componentType="TS_Record_NRollover_JSON/HDFSTarget" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="HDFSTarget" componentGroup="" componentCategory="target" componentName="AS_Views_View2_Targets_TS_Record_NRollover_JSON_Target" enable_monitor="true" dataflow_eps_limit="800"/>
+        <property componentType="TS_Block_Rollover1Min/HDFSTarget" entry="View2/TS_Block_Rollover1Min" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="HDFSTarget" componentGroup="" componentCategory="target" componentName="AS_Views_View2_Targets_TS_Block_Rollover1Min_Target" enable_monitor="true" dataflow_eps_limit="800"/>
+        <property componentType="EventID_NoCompression_Rollover10K_JSON/XMLToJSONConverter" entry="View2/EventID_NoCompression_Rollover10K_JSON" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="XMLToJSONConverter" componentGroup="" componentCategory="converter" componentName="AS_Views_View2_Targets_EventID_NoCompression_Rollover10K_JSON_Converter" enable_monitor="true" dataflow_eps_limit="-1" concurrency="0"/>
+        <property componentType="EventID_NoCompression_Rollover10K_JSON/HDFSTarget" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="HDFSTarget" componentGroup="" componentCategory="target" componentName="AS_Views_View2_Targets_EventID_NoCompression_Rollover10K_JSON_Target" enable_monitor="true" dataflow_eps_limit="800"/>
+      </AdvancedProperties>
+      <ExceptionCondition act="skip" logException="true" logEvent="true">
+        <Source retry="5" delay="5" timeunit="second"/>
+        <Target retry="5" delay="5" timeunit="second"/>
+      </ExceptionCondition>
+    </DeploymentSetting>
+  </ModelInfo>
+</ActivityStreamModel>
