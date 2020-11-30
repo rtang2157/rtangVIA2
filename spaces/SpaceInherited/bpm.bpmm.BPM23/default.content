@@ -1,0 +1,442 @@
+<BpmAppModel description="Description of New Model 0" name="BPM23" is_init="false">
+  <ModelInfo validated="true">
+    <Models>
+      <Model name="Resources" id="7f73c568-7281-412e-8b8d-b3c0fb28d00a" type="folder" version="1" path="">
+        <Contents>
+        </Contents>
+        <References>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="Types" id="a3196d52-c868-4a3b-8c9d-9b636ac18dad" type="folder" version="1" path="">
+        <Contents>
+        </Contents>
+        <References>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="Models" id="b9e3a1b0-6078-4533-bd31-1c73cace821f" type="folder" version="1" path="">
+        <Contents>
+        </Contents>
+        <References>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="HelloEPN" id="c1da2f2d-2e2e-428d-9f68-b3df6a52cf1c" type="EPN" version="1" path="Models">
+        <Contents>
+          <Content name="openQueryModel">
+            <Data><![CDATA[<epn:component name="HelloEPN" durable="false" isTemplate="false" checkpoint="false" version="2" xmlns:epn="http://epn.vitria.com/model">
+  <properties>
+    <non-durable/>
+  </properties>
+  <stream name="3B7EA30A-EBC9-0358-37F1-D704B179A607-Out">
+    <inputbinding>
+      <feed name="Resources/OrderFeed"/>
+    </inputbinding>
+  </stream>
+  <stream name="1C9BE341-7654-35E3-D5AB-D704C697AF26-Out">
+    <outputbinding/>
+  </stream>
+  <stream name="3AE9D10D-3687-610D-CD35-D744409587F7-Out">
+    <outputbinding>
+      <adhoc>
+        <liveCollection removeEmptyGroups="false">
+          <lcDefinition/>
+        </liveCollection>
+        <live enabled="true"/>
+      </adhoc>
+    </outputbinding>
+  </stream>
+  <query saveContext="false" title="FilterUpdatedOrders" name="1C9BE341-7654-35E3-D5AB-D704C697AF26">
+    <xquery><![CDATA[
+declare namespace Orders_ns2 = "http://tutorials.schema.vitria.com/order";
+declare namespace Orders_ns1 = "http://schema.vitria.com/Event/Types/OrderEvent";
+declare option qs:checkpoint "off";
+declare option outputstream "1C9BE341-7654-35E3-D5AB-D704C697AF26-Out";
+declare output (1 as dom:element*);
+(: End of Generated Header :)
+for $order in qs:stream('3B7EA30A-EBC9-0358-37F1-D704B179A607-Out')
+
+where $order/Orders_ns1:order/Orders_ns2:order/status = 'updated'
+
+return
+    {$order}
+
+output
+    changes
+]CdAtAeNd]></xquery>
+  </query>
+  <query saveContext="false" title="CountOrdersByCustomer" name="3AE9D10D-3687-610D-CD35-D744409587F7">
+    <xquery><![CDATA[
+declare namespace Orders_ns1 = "http://schema.vitria.com/Event/Types/OrderEvent";
+declare namespace Orders_ns2 = "http://tutorials.schema.vitria.com/order";
+declare option qs:checkpoint "off";
+declare option outputstream "3AE9D10D-3687-610D-CD35-D744409587F7-Out";
+declare output (1 as dom:element*);
+(: End of Generated Header :)
+for $order in qs:window('1C9BE341-7654-35E3-D5AB-D704C697AF26-Out', 'sliding size P1M step P5S')
+
+group by
+    $order/Orders_ns1:order/Orders_ns2:order/customer/customerId
+
+return
+    <CountOrdersByCustomer>
+        <customerId>{fn:string($order/Orders_ns1:order/Orders_ns2:order/customer/customerId)}</customerId>
+        <orderCount>{fn:string(qs:count($order))}</orderCount>
+    </CountOrdersByCustomer>
+
+output
+    changes
+]CdAtAeNd]></xquery>
+  </query>
+</epn:component>]]></Data>
+          </Content>
+          <Content name="pageModel">
+            <Data><![CDATA[<widget isTemplate="false" checkpoint="false" durableMaxInactiveTime="" durable="false" backgroundColor="#ffffff" type="Dashboard" label="HelloEPN" version="v4"><metadata><property visual="false" refreshable="false"/></metadata><inputs/><outputs/><layout name="#NULL"/><notes><note x="340" y="62" width="227" height="93" title="Note" color="10066329"><![CDATA["FilterUpdatedOrders" query demonstrates the usage of simple filter]CdAtAeNd]></note><note x="587" y="62" width="227" height="93" title="Note" color="10066329"><![CDATA["CountOrdersByCustomerHour" query demonstrates the usage of Aggregation]CdAtAeNd]></note></notes><widgets><widget refreshOnQuiesce="false" dataChangeOnly="true" selectable="false" visible="Never" frameStyle="null" frame="RoundedBox" height="40" width="80" compy="166" compx="200.5" ypos="138" xpos="295.5" title="OrderFeed" name="builtin:com-vitria-epn-core-feed" uuid="3B7EA30A-EBC9-0358-37F1-D704B179A607"><param name="feedName" value="OrderFeed###5a314b42-add3-4366-86ea-e68e9c9535c7###home/vtbaadmin/CEP2_Aggregation###/home/vtbaadmin/CEP2_Aggregation/Resources/OrderFeed###NONE###NONE###false"/><param value="all" name="playback"/><param name="virtualEventSettings" value="false"/><param name="virtualEventInterval" value="P1S"/><param name="maxEventDelay" value="P1S"/><param value="SUBSCRIBE" name="subMode"/></widget><widget uuid="1C9BE341-7654-35E3-D5AB-D704C697AF26" name="builtin:com-vitria-epn-core-query" title="FilterUpdatedOrders" xpos="315.5" ypos="158" compx="390" compy="167" width="200" height="150" frame="Panel" frameStyle="null" visible="Never" selectable="false" dataChangeOnly="true" refreshOnQuiesce="false"><embedded><source><![CDATA[
+<query version="1.3">
+  <block type="PRAGMA"/>
+  <block type="FOR">
+    <node variable="$order" port="Orders" window="unbounded"/>
+  </block>
+  <block type="LET"/>
+  <block type="WHERE">
+    <node path="$order/Orders_ns1:order/Orders_ns2:order/status" operator="EQ" value="'updated'" cast="none" logical="AND"/>
+  </block>
+  <block type="ORDER-BY"/>
+  <block type="GROUP-BY"/>
+  <block type="RETURN">
+    <node value="$order"/>
+  </block>
+  <block type="OUTPUT">
+    <node option="changes" every="false" interval="10" unit="second"/>
+  </block>
+</query>
+]CdAtAeNd]></source><execute><![CDATA[
+declare namespace Orders_ns2 = "http://tutorials.schema.vitria.com/order";
+declare namespace Orders_ns1 = "http://schema.vitria.com/Event/Types/OrderEvent";
+declare option outputstream "{out}";
+declare output (1 as dom:element*);
+(: End of Generated Header :)
+for $order in qs:stream('{Orders}')
+
+where $order/Orders_ns1:order/Orders_ns2:order/status = 'updated'
+
+return
+    {$order}
+
+output
+    changes
+
+]CdAtAeNd]></execute><sample><![CDATA[
+<Orders_ns1:Event xmlns:Orders_ns1="http://schema.vitria.com/Event/Types/OrderEvent">
+  <Orders_ns1:order>
+    <Orders_ns2:order xmlns:Orders_ns2="http://tutorials.schema.vitria.com/order">
+      <orderId __vitria__type="string"/>
+      <customer>
+        <customerId __vitria__type="string"/>
+        <name __vitria__type="string"/>
+        <address __vitria__type="string"/>
+        <zip __vitria__type="string"/>
+      </customer>
+      <items>
+        <itemId __vitria__type="string"/>
+        <description __vitria__type="string"/>
+        <quantity __vitria__type="string"/>
+        <price __vitria__type="string"/>
+      </items>
+      <totalPrice __vitria__type="string"/>
+      <status __vitria__type="string"/>
+      <orderDate __vitria__type="string"/>
+    </Orders_ns2:order>
+  </Orders_ns1:order>
+</Orders_ns1:Event>
+]CdAtAeNd]></sample></embedded><param name="$dynamic-input-ports" value="Orders:Orders"/><param name="enableTSC" value="false"/><param name="tscInterval" value="30 second"/><param name="tscRange" value="1 hour"/><param name="$warnings" value="REWIRED"/></widget><widget uuid="3AE9D10D-3687-610D-CD35-D744409587F7" name="builtin:com-vitria-epn-core-query" title="CountOrdersByCustomer" xpos="428.5" ypos="158" compx="568.5" compy="167" width="200" height="150" frame="Panel" frameStyle="null" visible="Never" selectable="false" dataChangeOnly="true" refreshOnQuiesce="false"><embedded><source><![CDATA[
+<query version="1.4">
+  <block type="PRAGMA"/>
+  <block type="FOR">
+    <node variable="$order" port="Orders" window="sliding-time" span="P1M" step="P5S"/>
+  </block>
+  <block type="LET"/>
+  <block type="WHERE"/>
+  <block type="ORDER-BY"/>
+  <block type="GROUP-BY">
+    <node path="$order/Orders_ns1:order/Orders_ns2:order/customer/customerId"/>
+  </block>
+  <block type="RETURN">
+    <node name="CountOrdersByCustomer" type="element">
+      <node name="customerId" type="element" value="$order/Orders_ns1:order/Orders_ns2:order/customer/customerId" cast="string"/>
+      <node name="orderCount" type="element" value="qs:count($order)" cast="string"/>
+    </node>
+  </block>
+  <block type="OUTPUT">
+    <node option="changes" every="false" interval="10" unit="second"/>
+  </block>
+</query>
+]CdAtAeNd]></source><execute><![CDATA[
+declare namespace Orders_ns1 = "http://schema.vitria.com/Event/Types/OrderEvent";
+declare namespace Orders_ns2 = "http://tutorials.schema.vitria.com/order";
+declare option outputstream "{out}";
+declare output (1 as dom:element*);
+(: End of Generated Header :)
+for $order in qs:window('{Orders}', 'sliding size P1M step P5S')
+
+group by
+    $order/Orders_ns1:order/Orders_ns2:order/customer/customerId
+
+return
+    <CountOrdersByCustomer>
+        <customerId>{fn:string($order/Orders_ns1:order/Orders_ns2:order/customer/customerId)}</customerId>
+        <orderCount>{fn:string(qs:count($order))}</orderCount>
+    </CountOrdersByCustomer>
+
+output
+    changes
+
+]CdAtAeNd]></execute><sample><![CDATA[
+<CountOrdersByCustomer>
+  <customerId __vitria__type="string"/>
+  <orderCount __vitria__type="string"/>
+</CountOrdersByCustomer>
+]CdAtAeNd]></sample></embedded><param name="$dynamic-input-ports" value="Orders:Orders"/><param name="enableTSC" value="false"/><param name="tscInterval" value="5 minute"/><param name="tscRange" value="0 minute"/></widget></widgets><connection><link event="undefined"><source uuid="3B7EA30A-EBC9-0358-37F1-D704B179A607" port="source"/><target uuid="1C9BE341-7654-35E3-D5AB-D704C697AF26" port="@Orders"/></link><link event="undefined"><source uuid="1C9BE341-7654-35E3-D5AB-D704C697AF26" port="out"/><target uuid="3AE9D10D-3687-610D-CD35-D744409587F7" port="@Orders"/></link></connection></widget>]]></Data>
+          </Content>
+        </Contents>
+        <References>
+          <Reference name="_home_vtbaadmin_CEP2_Aggregation_Resources_OrderFeed" value="4a441f61-56d9-498c-97fb-e9f7a710f9d3"/>
+          <Reference name="_home_sample_HelloCEP_Resources_OrderFeed" value="4a441f61-56d9-498c-97fb-e9f7a710f9d3"/>
+        </References>
+        <Properties>
+          <Property name="isAdhoc" value="true"/>
+          <Property name="useParameter" value="false"/>
+          <Property name="isTemplate" value="false"/>
+          <Property name="refresh" value="true"/>
+          <Property name="vtui:category" value="EPN"/>
+          <Property name="vt:lastUser" value="vtbaadmin"/>
+          <Property name="embed" value="false"/>
+          <Property name="_modelType" value="EPN"/>
+        </Properties>
+      </Model>
+      <Model name="OrderFeed" id="4a441f61-56d9-498c-97fb-e9f7a710f9d3" type="feed" version="1" path="Resources">
+        <Contents>
+          <Content name="feed.definition">
+            <Data><![CDATA[{"eventArchive":{"type":"NONE"},"eventSchema":{"modelRef":"_mr____ESREF","name":"Types/OrderEvent","content":"variables"},"kind":"LOCAL","outboundSource":{"type":"NONE"},"auditLogging":"ON","maxSize":-1,"timestamp":{"path":"declare namespace tns=&quot;http://tutorials.schema.vitria.com/order&quot;;/tns:order/orderDate","type":"USER","variableRef":"order"},"feedState":{"isTimebound":false,"attributesInWb":[],"type":"NONE","tablename":"","isSnapshot":false}}]]></Data>
+          </Content>
+        </Contents>
+        <References>
+          <Reference name="_mr____ESREF" value="e9c44a4e-8931-4c5f-98a1-57bbb9b20fdd"/>
+        </References>
+        <Properties>
+          <Property name="vtui:kind" value="LOCAL"/>
+          <Property name="vtui:historic" value="false"/>
+          <Property name="vtui:event" value="Types/OrderEvent"/>
+          <Property name="vtui:feedState" value="NONE"/>
+          <Property name="vtui:outbound" value="NONE"/>
+          <Property name="vtui:category" value="Feed"/>
+          <Property name="vt:lastUser" value="vtbaadmin"/>
+          <Property name="_modelType" value="feed"/>
+          <Property name="vtui:eventArchive" value="NONE"/>
+        </Properties>
+      </Model>
+      <Model name="OrderEvent" id="e9c44a4e-8931-4c5f-98a1-57bbb9b20fdd" type="event" version="3" path="Types">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[[{"name":"_EMFEventContext","attachmentAllowed":false,"kind":"XSDELEMENT","type":"{http://schema.vitria.com/model}EMFEventContext"},{"name":"order","attachmentAllowed":"false","kind":"XSDELEMENT","type":"{http://tutorials.schema.vitria.com/order}order","label":""},{"name":"NewVariable1","attachmentAllowed":false,"type":"double","label":""}]]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[[{"nodeType":"group","templateID":"http://tutorials.schema.vitria.com/order?element=order","uiIsExpanded":"true","typeKind":"XSDELEMENT","schemaRevision":"4","storageType":"LOB","name":"order","namespace":"http://tutorials.schema.vitria.com/order","typeName":"order","typeNamespace":"http://tutorials.schema.vitria.com/order","uiTypeName":"order","children":[{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"orderId","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/orderId","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/orderId","variableRef":"order","statePath":"OrderEvent/order/orderId","idx":1,"parent":0,"hasChildren":false},{"nodeType":"group","children":[{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"customerId","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/customerId","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/customerId","variableRef":"order","statePath":"OrderEvent/order/customer/customerId","idx":3,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"name","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/name","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/name","variableRef":"order","statePath":"OrderEvent/order/customer/name","idx":4,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"address","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/address","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/address","variableRef":"order","statePath":"OrderEvent/order/customer/address","idx":5,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"zip","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/zip","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/zip","variableRef":"order","statePath":"OrderEvent/order/customer/zip","idx":6,"parent":2,"hasChildren":false}],"uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"customer","typeName":"customer","typeNamespace":"http://tutorials.schema.vitria.com/order","templateID":"http://tutorials.schema.vitria.com/order?type=customer","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer","idx":2,"parent":0,"hasChildren":true},{"nodeType":"group","children":[{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"itemId","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/itemId","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/itemId","variableRef":"order","statePath":"OrderEvent/order/items/itemId","idx":8,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"description","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/description","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/description","variableRef":"order","statePath":"OrderEvent/order/items/description","idx":9,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"quantity","typeName":"int","xsdBuiltinType":"int","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/quantity","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/quantity","variableRef":"order","statePath":"OrderEvent/order/items/quantity","idx":10,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"price","typeName":"float","xsdBuiltinType":"float","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/price","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/price","variableRef":"order","statePath":"OrderEvent/order/items/price","idx":11,"parent":7,"hasChildren":false}],"uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"items","typeName":"items","typeNamespace":"http://tutorials.schema.vitria.com/order","templateID":"http://tutorials.schema.vitria.com/order?type=items","maxOccurs":"unbounded","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items","idx":7,"parent":0,"hasChildren":true},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"totalPrice","typeName":"float","xsdBuiltinType":"float","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/totalPrice","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/totalPrice","variableRef":"order","statePath":"OrderEvent/order/totalPrice","idx":12,"parent":0,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"status","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/status","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/status","variableRef":"order","statePath":"OrderEvent/order/status","idx":13,"parent":0,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"orderDate","typeName":"dateTime","xsdBuiltinType":"dateTime","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/orderDate","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/orderDate","variableRef":"order","statePath":"OrderEvent/order/orderDate","idx":14,"parent":0,"hasChildren":false}],"spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order","idx":0,"uiName":"order","label":"","parent":null,"category":"XSDtypes","attachment":"false","hasChildren":true},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"orderId","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/orderId","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/orderId","variableRef":"order","statePath":"OrderEvent/order/orderId","idx":1,"parent":0,"hasChildren":false},{"nodeType":"group","children":[{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"customerId","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/customerId","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/customerId","variableRef":"order","statePath":"OrderEvent/order/customer/customerId","idx":3,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"name","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/name","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/name","variableRef":"order","statePath":"OrderEvent/order/customer/name","idx":4,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"address","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/address","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/address","variableRef":"order","statePath":"OrderEvent/order/customer/address","idx":5,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"zip","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/zip","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/zip","variableRef":"order","statePath":"OrderEvent/order/customer/zip","idx":6,"parent":2,"hasChildren":false}],"uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"customer","typeName":"customer","typeNamespace":"http://tutorials.schema.vitria.com/order","templateID":"http://tutorials.schema.vitria.com/order?type=customer","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer","idx":2,"parent":0,"hasChildren":true},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"customerId","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/customerId","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/customerId","variableRef":"order","statePath":"OrderEvent/order/customer/customerId","idx":3,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"name","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/name","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/name","variableRef":"order","statePath":"OrderEvent/order/customer/name","idx":4,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"address","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/address","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/address","variableRef":"order","statePath":"OrderEvent/order/customer/address","idx":5,"parent":2,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"zip","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/zip","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/customer/zip","variableRef":"order","statePath":"OrderEvent/order/customer/zip","idx":6,"parent":2,"hasChildren":false},{"nodeType":"group","children":[{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"itemId","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/itemId","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/itemId","variableRef":"order","statePath":"OrderEvent/order/items/itemId","idx":8,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"description","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/description","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/description","variableRef":"order","statePath":"OrderEvent/order/items/description","idx":9,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"quantity","typeName":"int","xsdBuiltinType":"int","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/quantity","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/quantity","variableRef":"order","statePath":"OrderEvent/order/items/quantity","idx":10,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"price","typeName":"float","xsdBuiltinType":"float","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/price","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/price","variableRef":"order","statePath":"OrderEvent/order/items/price","idx":11,"parent":7,"hasChildren":false}],"uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"items","typeName":"items","typeNamespace":"http://tutorials.schema.vitria.com/order","templateID":"http://tutorials.schema.vitria.com/order?type=items","maxOccurs":"unbounded","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items","idx":7,"parent":0,"hasChildren":true},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"itemId","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/itemId","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/itemId","variableRef":"order","statePath":"OrderEvent/order/items/itemId","idx":8,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"description","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/description","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/description","variableRef":"order","statePath":"OrderEvent/order/items/description","idx":9,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"quantity","typeName":"int","xsdBuiltinType":"int","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/quantity","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/quantity","variableRef":"order","statePath":"OrderEvent/order/items/quantity","idx":10,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"price","typeName":"float","xsdBuiltinType":"float","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/price","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/items/price","variableRef":"order","statePath":"OrderEvent/order/items/price","idx":11,"parent":7,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"totalPrice","typeName":"float","xsdBuiltinType":"float","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/totalPrice","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/totalPrice","variableRef":"order","statePath":"OrderEvent/order/totalPrice","idx":12,"parent":0,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"status","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/status","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/status","variableRef":"order","statePath":"OrderEvent/order/status","idx":13,"parent":0,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"orderDate","typeName":"dateTime","xsdBuiltinType":"dateTime","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","maxOccurs":"1","minOccurs":"0","nillable":"true","spath":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/orderDate","path":"declare namespace tns=\"http://tutorials.schema.vitria.com/order\";/tns:order/orderDate","variableRef":"order","statePath":"OrderEvent/order/orderDate","idx":14,"parent":0,"hasChildren":false},{"name":"NewVariable1","label":"","isFolder":false,"parent":null,"category":"built-inType","idx":15,"uiName":"NewVariable1","hasChildren":false,"typeName":"double"}]]]></Data>
+          </Content>
+          <Content name="forms">
+            <Data><![CDATA[<mf:steps selectedStep="Step_1" xmlns:mf="http://form.vitria.com">
+  <mf:step id="Step_1" label="">
+    <mf:form id="Form_1300687166260" backgroundColor="16777215" backgroundAlpha="0" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10"/>
+  </mf:step>
+</mf:steps>]]></Data>
+          </Content>
+        </Contents>
+        <References>
+          <Reference name="_mr__xsdTypeModel_1" value="b00fcaf0-2e72-477b-955b-faf66bcf0bb9"/>
+        </References>
+        <Properties>
+          <Property name="vtui:category" value="Event"/>
+          <Property name="useParameter" value="false"/>
+          <Property name="schema.property.supportqualified" value="true"/>
+          <Property name="_modelType" value="schema.event"/>
+          <Property name="_public" value="false"/>
+          <Property name="_tr__variables" value="{http://schema.vitria.com/model}EMFEventContext{XSDELEMENT};{http://tutorials.schema.vitria.com/order}order{XSDELEMENT}"/>
+        </Properties>
+        <Dependency>
+b00fcaf0-2e72-477b-955b-faf66bcf0bb9
+        </Dependency>
+      </Model>
+      <Model name="Order" id="b00fcaf0-2e72-477b-955b-faf66bcf0bb9" type="xsd" version="1" path="Types">
+        <Contents>
+          <Content name="xsddef">
+            <Data><![CDATA[{"schematypeproperties":"<typeprops>\n  <lastModifySourceDate>0</lastModifySourceDate>\n  <uploadName/>\n  <uploadType>singleFile</uploadType>\n  <originalType>0</originalType>\n</typeprops>","schematypexsd":"<xs:schema targetNamespace=\"http://tutorials.schema.vitria.com/order\" elementFormDefault=\"unqualified\" attributeFormDefault=\"unqualified\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://tutorials.schema.vitria.com/order\">\n  <xs:element name=\"order\" type=\"order\"/>\n  <xs:complexType name=\"customer\">\n    <xs:sequence>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"customerId\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"name\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"address\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"zip\" type=\"xs:string\"/>\n    </xs:sequence>\n  </xs:complexType>\n  <xs:complexType name=\"items\">\n    <xs:sequence>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"itemId\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"description\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"quantity\" type=\"xs:int\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"price\" type=\"xs:float\"/>\n    </xs:sequence>\n  </xs:complexType>\n  <xs:complexType name=\"order\">\n    <xs:sequence>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"orderId\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"customer\" type=\"customer\"/>\n      <xs:element minOccurs=\"0\" maxOccurs=\"unbounded\" nillable=\"true\" name=\"items\" type=\"items\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"totalPrice\" type=\"xs:float\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"status\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"orderDate\" type=\"xs:dateTime\"/>\n    </xs:sequence>\n  </xs:complexType>\n</xs:schema>\n","originalType":"0","schematypesource":"","uploadType":"singleFile","textschematypexsd":"<xs:schema targetNamespace=\"http://tutorials.schema.vitria.com/order\" elementFormDefault=\"unqualified\" attributeFormDefault=\"unqualified\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns=\"http://tutorials.schema.vitria.com/order\">\n  <xs:element name=\"order\" type=\"order\"/>\n  <xs:complexType name=\"customer\">\n    <xs:sequence>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"customerId\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"name\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"address\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"zip\" type=\"xs:string\"/>\n    </xs:sequence>\n  </xs:complexType>\n  <xs:complexType name=\"items\">\n    <xs:sequence>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"itemId\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"description\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"quantity\" type=\"xs:int\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"price\" type=\"xs:float\"/>\n    </xs:sequence>\n  </xs:complexType>\n  <xs:complexType name=\"order\">\n    <xs:sequence>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"orderId\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"customer\" type=\"customer\"/>\n      <xs:element minOccurs=\"0\" maxOccurs=\"unbounded\" nillable=\"true\" name=\"items\" type=\"items\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"totalPrice\" type=\"xs:float\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"status\" type=\"xs:string\"/>\n      <xs:element minOccurs=\"0\" nillable=\"true\" name=\"orderDate\" type=\"xs:dateTime\"/>\n    </xs:sequence>\n  </xs:complexType>\n</xs:schema>\n","lastModifySourceDate":"0"}]]></Data>
+          </Content>
+        </Contents>
+        <References>
+        </References>
+        <Properties>
+          <Property name="isSourceModify" value="true"/>
+          <Property name="vtui:schematyperegdate" value="1300716006897"/>
+          <Property name="vtui:category" value="SchemaType"/>
+          <Property name="vt:lastUser" value="vtbaadmin"/>
+          <Property name="isUserModifiedSource" value="false"/>
+          <Property name="_modelType" value="schema.xsd"/>
+        </Properties>
+      </Model>
+    </Models>
+    <BuiltInModels>
+      <Model name="EventSourceExceptionEvent" id="7f690cc0-82b1-40e3-81ac-afd8b8609856" type="event" version="1" path="Vitria/Event">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[[{"name":"_EMFEventContext","attachmentAllowed":false,"kind":"XSDELEMENT","type":"{http://schema.vitria.com/model}EMFEventContext"},{"name":"Header","attachmentAllowed":true,"kind":"XSDELEMENT","type":"{http://schema.vitria.com/model}EMFEventHeader"}]]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[[{"nodeType":"group","templateID":"http://schema.vitria.com/model?element=EMFEventHeader","uiIsExpanded":"true","typeKind":"XSDELEMENT","schemaRevision":"2","storageType":"SHREDDED","name":"Header","namespace":"http://schema.vitria.com/model","typeName":"EMFEventHeader","typeNamespace":"http://schema.vitria.com/model","children":[{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"EventSpace","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","minOccurs":"0","idx":2,"parent":1,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"EventCode","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","minOccurs":"0","idx":3,"parent":1,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"ExternalID","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","minOccurs":"0","idx":4,"parent":1,"hasChildren":false},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"Timestamp","typeName":"dateTime","xsdBuiltinType":"dateTime","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","minOccurs":"0","idx":5,"parent":1,"hasChildren":false}],"idx":1,"uiName":"Header","label":"Header","attachment":true,"parent":null,"hasChildren":true},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"EventSpace","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","minOccurs":"0","idx":2,"parent":1,"hasChildren":false,"variableRef":"Header","statePath":"EventSourceExceptionEvent/Header/EventSpace","spath":"declare namespace tns=&quot;http://schema.vitria.com/model&quot;;/tns:EMFEventHeader/EventSpace"},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"EventCode","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","minOccurs":"0","idx":3,"parent":1,"hasChildren":false,"variableRef":"Header","statePath":"EventSourceExceptionEvent/Header/EventCode","spath":"declare namespace tns=&quot;http://schema.vitria.com/model&quot;;/tns:EMFEventHeader/EventCode"},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"ExternalID","typeName":"string","xsdBuiltinType":"string","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","minOccurs":"0","idx":4,"parent":1,"hasChildren":false,"variableRef":"Header","statePath":"EventSourceExceptionEvent/Header/ExternalID","spath":"declare namespace tns=&quot;http://schema.vitria.com/model&quot;;/tns:EMFEventHeader/ExternalID"},{"nodeType":"field","uiIsExpanded":"true","typeKind":"XSDELEMENT","name":"Timestamp","typeName":"dateTime","xsdBuiltinType":"dateTime","typeNamespace":"http://www.w3.org/2001/XMLSchema","isSimpleType":"true","minOccurs":"0","idx":5,"parent":1,"hasChildren":false,"variableRef":"Header","statePath":"EventSourceExceptionEvent/Header/Timestamp","spath":"declare namespace tns=&quot;http://schema.vitria.com/model&quot;;/tns:EMFEventHeader/Timestamp"}]]]></Data>
+          </Content>
+        </Contents>
+        <References>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="Untyped" id="a0dc0212-add1-456a-80fe-ea3bf9c34489" type="event" version="1" path="Vitria/Event">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[[{"name":"_EMFEventContext","attachmentAllowed":false,"kind":"XSDELEMENT","type":"{http://schema.vitria.com/model}EMFEventContext"},{"name":"anyType","attachmentAllowed":false,"type":"anyType"}]]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[[{"nodeType":"field","uiIsExpanded":"true","typeKind":"SIMPLE","name":"anyType","typeName":"anyType","xsdBuiltinType":"anyType","isSimpleType":"true","idx":0,"parent":null,"hasChildren":false,"statePath":"ev1/anyType","category":"built-inType"}]]]></Data>
+          </Content>
+        </Contents>
+        <References>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="EventSourceExceptionFeed" id="ae78288e-e18e-496c-805f-e17f76f954ce" type="feed" version="1" path="Vitria/Feed">
+        <Contents>
+          <Content name="feed.definition">
+            <Data><![CDATA[{"kind":"NONE","auditLogging":"ON","maxSize":-1,"persistence":"ON","timestamp":{"type":"SYSTEM","variableRef":"","path":""},"eventArchive":{"type":"NONE"},"feedState":{"type":"NONE","isSnapshot":"false","tablename":""},"outboundSource":{"type":"NONE"},"eventSchema":{"content":"variables","name":"Vitria/Event/EventSourceExceptionEvent","modelRef":"_mr____ESREF"}}]]></Data>
+          </Content>
+        </Contents>
+        <References>
+          <Reference name="_mr____ESREF" value="7f690cc0-82b1-40e3-81ac-afd8b8609856"/>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="Exception" id="e6fff0c0-1835-4d10-87a1-36f265d575f4" type="exception" version="1" path="Vitria/Exception">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[[{"name":"category","type":"string","typeName":"string","uri":"http://www.w3.org/2001/XMLSchema"},{"name":"code","type":"string","typeName":"string","uri":"http://www.w3.org/2001/XMLSchema"},{"name":"message","type":"string","typeName":"string","uri":"http://www.w3.org/2001/XMLSchema"}]]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[[{"name":"category","label":"category","isFolder":false,"parent":null,"category":"built-inType","idx":0,"uiName":"category","hasChildren":false,"typeName":"string"},{"name":"code","label":"code","isFolder":false,"parent":null,"category":"built-inType","idx":1,"uiName":"code","hasChildren":false,"typeName":"string"},{"name":"message","label":"message","isFolder":false,"parent":null,"category":"built-inType","idx":2,"uiName":"message","hasChildren":false,"typeName":"string"}]]]></Data>
+          </Content>
+        </Contents>
+        <References>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="BusinessException" id="d6d3e069-1b3f-4950-8c3b-11a3f8132ffe" type="exception" version="1" path="Vitria/Exception">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[{}]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[{}]]></Data>
+          </Content>
+        </Contents>
+        <References>
+          <Reference name="_mr__parent" value="e6fff0c0-1835-4d10-87a1-36f265d575f4"/>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="SystemException" id="a51a5e82-5703-4614-85e4-b3affd1df11f" type="exception" version="1" path="Vitria/Exception">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[{}]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[{}]]></Data>
+          </Content>
+        </Contents>
+        <References>
+          <Reference name="_mr__parent" value="e6fff0c0-1835-4d10-87a1-36f265d575f4"/>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="SQLException" id="342dc3d9-c8d2-4a03-8d23-6c43a338956d" type="exception" version="1" path="Vitria/Exception">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[[{"name":"errorCode","type":"int","typeName":"int","uri":"http://www.w3.org/2001/XMLSchema"},{"name":"sqlState","type":"string","typeName":"string","uri":"http://www.w3.org/2001/XMLSchema"}]]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[[{"name":"errorCode","label":"errorCode","isFolder":false,"parent":null,"category":"built-inType","idx":0,"uiName":"errorCode","hasChildren":false,"typeName":"int"},{"name":"sqlState","label":"sqlState","isFolder":false,"parent":null,"category":"built-inType","idx":1,"uiName":"sqlState","hasChildren":false,"typeName":"string"}]]]></Data>
+          </Content>
+        </Contents>
+        <References>
+          <Reference name="_mr__parent" value="a51a5e82-5703-4614-85e4-b3affd1df11f"/>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="FeedException" id="56b87451-bec8-4496-8e1b-0f6c332e7fa7" type="exception" version="1" path="Vitria/Exception">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[{}]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[{}]]></Data>
+          </Content>
+        </Contents>
+        <References>
+          <Reference name="_mr__parent" value="a51a5e82-5703-4614-85e4-b3affd1df11f"/>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+      <Model name="Compensation" id="dee6d167-0fd7-45c4-85ea-5049b2187890" type="compensation" version="1" path="Vitria/Compensation">
+        <Contents>
+          <Content name="variables">
+            <Data><![CDATA[[{"name":"category","type":"string","typeName":"string","uri":"http://www.w3.org/2001/XMLSchema"},{"name":"code","type":"string","typeName":"string","uri":"http://www.w3.org/2001/XMLSchema"},{"name":"message","type":"string","typeName":"string","uri":"http://www.w3.org/2001/XMLSchema"}]]]></Data>
+          </Content>
+          <Content name="groupfield">
+            <Data><![CDATA[[{"name":"category","label":"category","isFolder":false,"parent":null,"category":"built-inType","idx":0,"uiName":"category","hasChildren":false,"typeName":"string"},{"name":"code","label":"code","isFolder":false,"parent":null,"category":"built-inType","idx":1,"uiName":"code","hasChildren":false,"typeName":"string"},{"name":"message","label":"message","isFolder":false,"parent":null,"category":"built-inType","idx":2,"uiName":"message","hasChildren":false,"typeName":"string"}]]]></Data>
+          </Content>
+        </Contents>
+        <References>
+        </References>
+        <Properties>
+        </Properties>
+      </Model>
+    </BuiltInModels>
+    <Deployments>
+        <Data><![CDATA[[{"timerConnectorSettings":{"pollrate":1,"batchSize":1,"concurrency":10},"defaultListId":1,"references":[],"resource":"<resourceSettings xmlns=\"http://schema.vitria.com\"/>\n","connectorSettings":{"pollrate":30,"batchSize":5,"concurrency":1},"label":"Deployment","workgroups":"<workgroupMapping xmlns:common=\"http://common.vitria.com/model\" xmlns=\"http://workflow.vitria.com/model\"/>","eventsource":"<resources xmlns=\"http://schema.vitria.com\"/>\n","serverSettings":{"newCorrelation":"false","auditLevel":"bpmnonly","retryCount":3,"runtimeValidation":"false","traceLevel":6,"persistLevel":"normal","autoPurge":"false","autoStart":"false","JMXMonitoring":"true"},"_serviceClientSettings":[{"serviceURI":"","localAddress":"http://kirkwood:8080","name":"","id":"d3a9ed43-2b97-47c6-b95f-5c828cbb0758"}],"threadPoolSettings":{"keepAliveTime":30,"coreSize":16,"maxSize":48},"projectResourceSettings":{"feedServerDSJNDI":"","HDFSSource":"","m3oServerDSJNDI":""},"name":"Deployment","id":"629de2d3-5a0e-4828-b43b-0f6311b47c5b","sharedfeeds":[],"parameters":[]}]]]></Data>
+    </Deployments>
+    <Classpath>
+        <Data><![CDATA[{"libs":{"_jars":[]},"libs4Osgi":{"_jars":[]}}]]></Data>
+    </Classpath>
+    <Parameters>
+        <Data><![CDATA[[]]]></Data>
+    </Parameters>
+    <UserRole>
+        <Data><![CDATA[<?xml version="1.0" encoding="UTF-8"?><BusinessEnvironment product_version="7.0.0.0" name="/home/vtbaadmin/CEP2_Aggregation" ID="9ac76eb9-ce75-4687-ac19-39d67a906d36">
+<staticroles/>
+<repousersstatic/>
+<repogroupsstatic/>
+</BusinessEnvironment>
+]]></Data>
+    </UserRole>
+    <Notification>
+        <Data><![CDATA[{"schema":"","detail":""}]]></Data>
+    </Notification>
+  </ModelInfo>
+</BpmAppModel>
