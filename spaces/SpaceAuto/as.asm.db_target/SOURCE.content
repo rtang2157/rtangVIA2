@@ -1,0 +1,1 @@
+<customers><customer><id>1</id><name>name1</name><status>fail</status></customer><customer><id>2</id><name>name2</name><status>fail</status></customer><customer><id>1</id><name>name1</name><status>pass</status></customer></customers>

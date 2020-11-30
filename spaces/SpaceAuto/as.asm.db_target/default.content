@@ -1,0 +1,133 @@
+<ActivityStreamModel description="" name="db_target" timezone="Asia/Shanghai" daylight="false" live="true">
+  <ModelInfo validated="true">
+    <Source>
+      <DataSource type="FileSource">
+        <property label="File Path" type="string" name="file" desc="The log4j main log file path" value="/home/qa/Vitria/db-target.txt"/>
+        <property optional="true" label="Rollover File Pattern" type="string" name="rolloverPattern" desc="The log4j rollover file name pattern. It can be a wildcard pattern that supports &apos;*&apos; and &apos;?&apos; or a regular expression. If it is not defined, it will be the file name suffixed with * (wildcard) or .* (regular expression)"/>
+        <property optional="true" label="Pattern Is Regex" type="boolean" value="false" name="isRegex" desc="By default, the rollover file pattern is wildcard. If it is set to true, the rollover file pattern is regular expression"/>
+        <property optional="true" label="Ignore First Line" type="boolean" value="false" name="ignoreFirstLine" desc="If it is set to true, the first line event of the file will be ignored"/>
+        <property constraints="encoding" optional="true" label="File Encoding" type="string" value="utf-8" name="fileEncoding" desc="The file encoding"/>
+        <property hidden="false" description="Whether to support Multi Line Event" label="Multi Line Event" type="boolean" value="false" name="multiline" desc="Whether to support Multi Line Event"/>
+        <property controlName="multiline" contorlValue="true" description="Whether to support Nested Delimiter" label="Nested Delimiter" type="boolean" value="false" name="nesteddel" desc="Whether to support Nested Delimiter"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="Max Number of Characters in Event" label="Max Event Length" type="number" value="1000" name="maxCharacterNum" desc="Max Number of Characters in Event" numberType="int"/>
+        <property controlName="multiline" contorlValue="true" description="Case Sensitive of Delimiters" label="Case Sensitive" type="boolean" value="true" name="caseSensitive" desc="Case Sensitive of Delimiters"/>
+        <property controlName="multiline" contorlValue="true" optional="true" label="Keep CRLF" type="boolean" value="false" name="keepcrlf" desc="Whether preserve CRLF in the event during runtime"/>
+        <property constraints="xmlMap(columnlabel1:Start, columnlabel2:End)" controlName="multiline" contorlValue="true" optional="true" description="The Special Literal Pair" label="Special Literal" type="xmldom" name="specialLiteral" desc="The start and end Special Literal Pair"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="The start Comment String" label="Start Comment" type="string" name="startComment" desc="The start Comment String"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="The end Comment String" label="End Comment" type="string" name="endComment" desc="The end Comment String"/>
+        <property controlName="multiline" contorlValue="true" optional="true" label="Escaped Character" type="string" name="escapedCharacter" desc="The Escaped Character when search Special Literal and Comment"/>
+        <property controlName="multiline" contorlValue="true" label="Start Delimiter" type="boolean" value="true" name="hasStartdel" desc="Select True if need Start Delimiter"/>
+        <property controlName="hasStartdel" contorlValue="true" optional="true" label="Delimiter String" type="string" name="startdel" desc="Start Delimiter String"/>
+        <property controlName="hasStartdel" contorlValue="true" description="Include Start Delimiter in Event" label="Include" type="boolean" value="true" name="startdelInclude" desc="Include Start Delimiter in Event"/>
+        <property controlName="hasStartdel" contorlValue="true" description="Support regular expression as Start Delimiter" label="Regular Expression" type="boolean" value="false" name="startdelReg" desc="Support regular expression as Start Delimiter"/>
+        <property controlName="multiline" contorlValue="true" label="End Delimiter" type="boolean" value="true" name="hasEnddel" desc="Select True if need End Delimiter"/>
+        <property controlName="hasEnddel" contorlValue="true" optional="true" label="Delimiter String" type="string" name="enddel" desc="End Delimiter String"/>
+        <property controlName="hasEnddel" contorlValue="true" description="Include End Delimiter in Event" label="Include" type="boolean" value="true" name="enddelInclude" desc="Include End Delimiter in Event"/>
+        <property controlName="hasEnddel" contorlValue="true" description="Support regular expression as End Delimiter" label="Regular Expression" type="boolean" value="false" name="enddelReg" desc="Support regular expression as End Delimiter"/>
+      </DataSource>
+      <Filter type="expression">
+        <property name="filter-operation" type="string" value="RegExp"/>
+        <property name="filter-argument" type="string" value=""/>
+      </Filter>
+    <Samples type="acquire">
+      <Sample name="" label="* Source Definition" payloadId="SOURCE" mimeType="txt">
+        <Param name="file" label="undefined" value="sample###txt###0" type="file"/>
+      </Sample>
+    </Samples>
+      <Parser name="XMLToXMLConverter">
+        <Component type="XMLSplitter" category="splitter">
+          <properties>
+            <property desc="The XPath to match the elements" constraints="xmlPath" optional="true" label="Split Path" type="string" name="xpath" value="/customers/customer"/>
+            <property desc="Specify whether to keep the parent for each matched element" optional="true" label="Keep Parent" type="boolean" value="false" name="keepParent"/>
+          </properties>
+        </Component>
+        <Component type="XMLToXMLConverter" category="converter">
+          <properties>
+            <property type="boolean" value="false" name="daylight" hidden="true" label="" desc=""/>
+            <property type="string" value="Asia/Shanghai" name="timezone" hidden="true" label="" desc=""/>
+            <property hidden="true" type="boolean" value="false" name="remove_event_wrapper" label="" desc=""/>
+          </properties>
+        </Component>
+        <Mapping type="auto" namespace="http://as" root="SourceEvent" prefix="n">
+          <group id="/customer" label="customer/" name="customer">
+            <field id="/customer/id" label="customer/id" name="id" value="1" type="integer"/>
+            <field id="/customer/name" label="customer/name" name="name" value="name1" type="string"/>
+            <field id="/customer/status" label="customer/status" name="status" value="fail" type="string"/>
+          </group>
+        </Mapping>
+      </Parser>
+    </Source>
+    <MappingPaths>
+     <path value="/customer" label="customer/"/>
+     <path value="/customer/id/text()" label="customer/id"/>
+     <path value="/customer/name/text()" label="customer/name"/>
+     <path value="/customer/status/text()" label="customer/status"/>
+    </MappingPaths>
+    <GlobalProperties><![CDATA[
+[]
+    ]]>
+    </GlobalProperties>
+    <DeletedNamespaces>
+    </DeletedNamespaces>
+    <UserSchemas>
+    </UserSchemas>
+        <View name="Default" desc="">
+        <Rule type="PerEvent"/>
+        <Filters type="expression" relation="AND">
+        </Filters>
+        <Mapping output="xml" type="auto">
+        </Mapping>
+        <Targets>
+           <Target name="Target1" type="DatabaseTarget">
+             <property enums="datasource=Project DataSource,domainds=Domain Data Source,jdbc=JDBC DataSource,j2eedatasource=J2EE DataSource," driveDynProp="tableName" description="The method to find connection" label="Connection Type" type="string" value="datasource" name="connectionType" desc=""/>
+             <property controlName="connectionType" hidden="true" contorlValue="datasource" driveDynProp="tableName" optional="true" label="DataSource Name" type="string" value="/vitria/m3o/datasource/DefaultDomain/defaultds" name="datasourceName" desc=""/>
+             <property restDyn="true" enumSource="rest:/projtable?op=listdatasource" controlName="connectionType" hidden="false" contorlValue="domainds" driveDynProp="tableName" label="DataSource Name" type="string" value="/vitria/m3o/datasource/DefaultDomain/defaultds" name="domaindsName" desc=""/>
+             <property controlName="connectionType" contorlValue="j2eedatasource" driveDynProp="tableName" optional="true" label="JNDI" type="string" value="java:/vitria/m3o/app001/ds/testds1" name="j2eeDatasource" desc=""/>
+             <property controlName="connectionType" enumDyn="true" enums="com.mysql.jdbc.Driver,oracle.jdbc.driver.OracleDriver,com.microsoft.sqlserver.jdbc.SQLServerDriver," contorlValue="jdbc" optional="true" label="Driver Class Name" type="string" value="com.mysql.jdbc.Driver" name="driverClass" desc=""/>
+             <property nosplit="true" controlName="connectionType" enumDyn="true" contorlValue="jdbc" enums="jdbc:mysql://localhost:3306/schemaName,jdbc:oracle:thin:@localhost:1521:orcl,jdbc:oracle:thin:@localhost:1521/pdborcl,jdbc:sqlserver://localhost:1433;DatabaseName=DBName," driveDynProp="tableName" optional="true" label="Connection URL" type="string" value="jdbc:mysql://10.101.7.117:3306/qa6107_dist" name="connectionURL" desc=""/>
+             <property controlName="connectionType" contorlValue="jdbc" driveDynProp="tableName" optional="true" label="Username" type="string" value="qa6107_dist" name="username" desc=""/>
+             <property constraints="password" controlName="connectionType" contorlValue="jdbc" driveDynProp="tableName" optional="true" label="Password" type="string" value="&lt;X@Yv0zfjcFwPX3ay&gt;" name="password" desc=""/>
+             <property restDyn="true" enumSource="rest:/app/as/pub/enrich?op=listtables&amp;connecttype=${connectionType}&amp;j2eeDatasource=${j2eeDatasource}&amp;datasource=${datasourceName}&amp;domainds=${domaindsName}&amp;connectionURL=${connectionURL}&amp;driverClass=${driverClass}&amp;username=${username}&amp;password=${password}&amp;vitria.filter=true" driveDynProp="updateKey,updateColumns" optional="true" description="The table name" label="Table Name" type="string" value="DB_TARGET_CUSTOMERS_INDEX1" name="tableName" desc=""/>
+             <property enums="insert=Always Insert,insertupdate=Insert or Update," driveDynProp="updateKey,updateColumns" description="The operations on the table" label="Operation" type="string" value="insertupdate" name="operation" desc=""/>
+             <property restDyn="true" enumSource="rest:/app/as/pub/enrich?op=listcolumns&amp;connecttype=${connectionType}&amp;j2eeDatasource=${j2eeDatasource}&amp;datasource=${datasourceName}&amp;domainds=${domaindsName}&amp;connectionURL=${connectionURL}&amp;driverClass=${driverClass}&amp;username=${username}&amp;password=${password}&amp;table=${tableName}" controlName="operation" multiple="true" decription="The columns to identify the unique row, update it if exists" contorlValue="insertupdate" requiredProps="tableName" optional="true" label="Unique Columns" type="string" name="updateKey" desc="" value="ID"/>
+             <property controlName="operation" contorlValue="insertupdate" optional="true" label="Selective Columns Update" type="boolean" value="true" name="partialUpdate" desc=""/>
+             <property restDyn="true" enumSource="rest:/app/as/pub/enrich?op=listcolumns&amp;connecttype=${connectionType}&amp;j2eeDatasource=${j2eeDatasource}&amp;datasource=${datasourceName}&amp;domainds=${domaindsName}&amp;connectionURL=${connectionURL}&amp;driverClass=${driverClass}&amp;username=${username}&amp;password=${password}&amp;table=${tableName}" controlName="partialUpdate" multiple="true" enableAll="true" decription="The selective columns to be updated if and only if the operation is update." contorlValue="true" requiredProps="tableName" optional="true" label="Update Columns" type="string" name="updateColumns" desc="" value="NAME"/>
+             <property decription="Whether to truncate table when purging project" optional="true" label="Truncate Table When Purge" type="boolean" value="true" name="truncateTableWhenPurge" desc=""/>
+             <property hidden="true" optional="true" description="The name of the column to record last update time" label="Last Update Column Name" type="string" name="lastUpdateColumn" desc=""/>
+             <property hidden="true" optional="true" description="Whether the table is auto created" label="Auto Generate" type="boolean" value="false" name="autoGenerate" desc=""/>
+             <property constraints="xmlMap" hidden="true" optional="true" description="The schema for auto-generated table" type="xmldom" name="tableSchema" label="" desc=""/>
+             <property hidden="true" optional="true" description="The internal property used by target framework" type="boolean" value="true" name="is_transactional" label="" desc=""/>
+             <property name="remove_event_wrapper" label="Remove Wrapper" value="false" type="boolean"/>
+             <property name="###parse_to_string###" label="Parse to String" value="false" type="boolean"/>
+             <Mapping output="xml" type="target" input="xml">
+               <group id="/root" label="/root" name="root" namespace="http://www.vitria.com/rdbtarget" type="">
+                 <field id="SEQ" label="SEQ" name="SEQ" value="" type="int"/>
+                 <field id="ID" label="ID" name="ID" value="" mapping="/customer/id/text()" type="int"/>
+                 <field id="NAME" label="NAME" name="NAME" value="" mapping="/customer/name/text()" type="string"/>
+                 <field id="STATUS" label="STATUS" name="STATUS" value="" mapping="/customer/status/text()" type="string"/>
+               </group>
+             </Mapping>
+           </Target>
+        </Targets>
+    </View>
+    <DeploymentSetting>
+      <ServerTag value=""/>
+      <DataSource value="/vitria/m3o/datasource/DefaultDomain/defaultds"/>
+      <QOS value="0"/>
+      <AdvancedProperties>
+        <property componentType="FileSource" batch_size="1000" dataflow_throttling_policy="slowdown" batch_time="200" modelComponentType="FileSource" componentGroup="Source" componentCategory="source" componentName="AS_Source_Source" enable_monitor="true" dataflow_eps_limit="-1" poll_rate="1000"/>
+        <property componentType="XMLSplitter" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="XMLSplitter" componentGroup="" componentCategory="splitter" componentName="AS_Source_Splitter" enable_monitor="true" dataflow_eps_limit="-1" concurrency="0"/>
+        <property componentType="XMLToXMLConverter" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="XMLToXMLConverter" componentGroup="" componentCategory="converter" componentName="AS_Source_Converter" enable_monitor="true" dataflow_eps_limit="-1" concurrency="0"/>
+        <property componentType="Target1/XMLToXMLConverter" entry="Default/Target1" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="XMLToXMLConverter" componentGroup="Default" componentCategory="converter" componentName="AS_Views_Default_Targets_Target1_Converter" enable_monitor="true" dataflow_eps_limit="-1" concurrency="0"/>
+        <property componentType="Target1/DatabaseTarget" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="DatabaseTarget" componentGroup="" componentCategory="target" componentName="AS_Views_Default_Targets_Target1_Target" enable_monitor="true" dataflow_eps_limit="-1"/>
+      </AdvancedProperties>
+      <ExceptionCondition act="skip" logException="true" logEvent="true">
+        <Source retry="5" delay="5" timeunit="second"/>
+        <Target retry="5" delay="5" timeunit="second"/>
+      </ExceptionCondition>
+    <Binding><![CDATA[
+{}
+    ]]></Binding>
+    </DeploymentSetting>
+  </ModelInfo>
+</ActivityStreamModel>

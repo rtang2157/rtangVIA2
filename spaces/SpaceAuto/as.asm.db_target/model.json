@@ -1,0 +1,28 @@
+{
+  "contents": [
+    {
+      "fileref": "ModelContentFile0",
+      "name": "default"
+    },
+    {
+      "classname": "inputstream",
+      "fileref": "ModelContentFile1",
+      "name": "SOURCE"
+    }
+  ],
+  "lastDate": "1606727689000",
+  "owner": "rtang1",
+  "properties": {
+    "_RESOURCE_Description": "",
+    "_RESOURCE_Type": "asm",
+    "__references__": "",
+    "com.vitria.as.references": "#",
+    "com.vitria.as.samples": "=* Source Definition",
+    "com.vitria.as.size": "0",
+    "live": "true",
+    "modelStatus": "valid",
+    "module_deps": "commonevent,database,file",
+    "name": "db_target",
+    "sourceType": "FileSource"
+  }
+}

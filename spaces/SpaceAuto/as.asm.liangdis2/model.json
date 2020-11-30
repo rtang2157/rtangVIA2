@@ -1,0 +1,21 @@
+{
+  "contents": [{
+    "fileref": "ModelContentFile0",
+    "name": "default"
+  }],
+  "lastDate": "1606727689198",
+  "owner": "vtbaadmin",
+  "properties": {
+    "_RESOURCE_Description": "",
+    "_RESOURCE_Type": "asm",
+    "__references__": "",
+    "com.vitria.as.references": "#",
+    "com.vitria.as.samples": "#",
+    "com.vitria.as.size": "0",
+    "live": "true",
+    "modelStatus": "valid",
+    "module_deps": "file",
+    "name": "liangdis2",
+    "sourceType": "FileSource"
+  }
+}

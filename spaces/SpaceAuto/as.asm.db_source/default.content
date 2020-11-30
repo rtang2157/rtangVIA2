@@ -1,0 +1,133 @@
+<ActivityStreamModel description="" name="db_source" timezone="Asia/Shanghai" daylight="false" live="true">
+  <ModelInfo validated="true">
+    <Source>
+      <DataSource type="DatabaseSource">
+        <property enums="datasource=Project DataSource,domainds=Domain Data Source,jdbc=JDBC DataSource,j2eedatasource=J2EE DataSource," driveDynProp="tableName" description="The method to find connection" label="Connection Type" type="string" value="datasource" name="connectionType" desc=""/>
+        <property restDyn="true" enumSource="rest:/projtable?op=listdatasource" controlName="connectionType" hidden="true" contorlValue="datasource" driveDynProp="tableName" label="DataSource Name" type="string" value="/vitria/m3o/datasource/DefaultDomain/defaultds" name="datasourceName" desc=""/>
+        <property restDyn="true" enumSource="rest:/projtable?op=listdatasource" controlName="connectionType" hidden="false" contorlValue="domainds" driveDynProp="tableName" label="DataSource Name" type="string" value="/vitria/m3o/datasource/DefaultDomain/defaultds" name="domaindsName" desc=""/>
+        <property controlName="connectionType" contorlValue="j2eedatasource" driveDynProp="tableName" optional="true" label="JNDI" type="string" value="" name="j2eeDatasource" desc=""/>
+        <property controlName="connectionType" enumDyn="true" enums="com.mysql.jdbc.Driver,oracle.jdbc.driver.OracleDriver,com.microsoft.sqlserver.jdbc.SQLServerDriver," contorlValue="jdbc" optional="true" label="Driver Class Name" type="string" value="com.mysql.jdbc.Driver" name="driverClass" desc=""/>
+        <property nosplit="true" controlName="connectionType" enumDyn="true" enums="jdbc:mysql://localhost:3306/schemaName,jdbc:oracle:thin:@localhost:1521:orcl,jdbc:oracle:thin:@localhost:1521/pdborcl,jdbc:sqlserver://localhost:1433;DatabaseName=DBName," contorlValue="jdbc" driveDynProp="tableName" optional="true" label="Connection URL" type="string" value="jdbc:mysql://10.101.7.117:3306/qa6107_dist" name="connectionURL" desc=""/>
+        <property controlName="connectionType" contorlValue="jdbc" driveDynProp="tableName" optional="true" label="Username" type="string" value="qa6107_dist" name="username" desc=""/>
+        <property constraints="password" controlName="connectionType" contorlValue="jdbc" driveDynProp="tableName" optional="true" label="Password" type="string" value="&lt;BHjHY@XRyJ5pRs!I&gt;" name="password" desc=""/>
+        <property enums="basic=Basic configuration,advanced=Advanced configuration," label="Configuration Mode" type="string" value="advanced" name="configMode" desc=""/>
+        <property restDyn="true" enumSource="rest:/app/as/pub/enrich?op=listtables&amp;connecttype=${connectionType}&amp;j2eeDatasource=${j2eeDatasource}&amp;datasource=${datasourceName}&amp;domainds=${domaindsName}&amp;connectionURL=${connectionURL}&amp;driverClass=${driverClass}&amp;username=${username}&amp;password=${password}&amp;vitria.filter=true" controlName="configMode" contorlValue="basic" driveDynProp="columns,stateColumns" optional="true" description="The table name." label="Table Name" type="string" value="DB_TEST" name="tableName" desc=""/>
+        <property restDyn="true" enumSource="rest:/app/as/pub/enrich?op=listcolumns&amp;connecttype=${connectionType}&amp;j2eeDatasource=${j2eeDatasource}&amp;datasource=${datasourceName}&amp;domainds=${domaindsName}&amp;connectionURL=${connectionURL}&amp;driverClass=${driverClass}&amp;username=${username}&amp;password=${password}&amp;table=${tableName}" keepOrder="true" controlName="configMode" multiple="true" decription="Columns to identify results, empty means all." contorlValue="basic" requiredProps="tableName" optional="true" label="Result Columns" type="string" name="columns" desc="" value="cinteger,cbool,clong,cdecimal,cfloat,cdouble,cdate,ctime,cdatetime,cstring"/>
+        <property controlName="configMode" contorlValue="basic" optional="true" description="Enable the incremental selection from data source." label="Enable State" type="boolean" value="false" name="basicEnableState" desc=""/>
+        <property restDyn="true" enumSource="rest:/app/as/pub/enrich?op=listcolumns&amp;connecttype=${connectionType}&amp;j2eeDatasource=${j2eeDatasource}&amp;datasource=${datasourceName}&amp;domainds=${domaindsName}&amp;connectionURL=${connectionURL}&amp;driverClass=${driverClass}&amp;username=${username}&amp;password=${password}&amp;table=${tableName}" keepOrder="true" controlName="basicEnableState" multiple="true" decription="The column to identify the state." contorlValue="true" requiredProps="tableName" optional="true" label="State Columns" type="string" name="stateColumns" desc="" value="cinteger,cbool,clong,cdecimal,cfloat,cdouble,cdate,ctime,cdatetime,cstring"/>
+        <property controlName="basicEnableState" contorlValue="true" enums="all=Load all existing records,new=Only load new records," optional="true" description="Specify how to construct the init state when running on stateful mode." label="Initial Fetch Rule" type="string" value="all" name="basicFetchRule" desc=""/>
+        <property constraints="script(scriptMode:sql,helpContent:flow/help/scripts/InitialSQL.json,header:false,bodyTemplate:flow/help/scripts/InitialSQL.sql)" controlName="configMode" contorlValue="advanced" optional="true" description="The sql used to get result set for stateless mode. It will be used to get intial state for stateful mode." label="Initial SQL" type="string" name="sql" desc=""><![CDATA[select cinteger,cbool,clong,cdecimal,cfloat,cdouble,cdate,ctime,cdatetime,cstring 
+from DB_TEST order by cinteger asc
+]]></property>
+        <property controlName="configMode" contorlValue="advanced" optional="true" description="Enable the incremental selection from data source." label="Enable State" type="boolean" value="true" name="enableState" desc=""/>
+        <property constraints="xmlItems(columns:Variable=variable;Column=alias;Initial Value=value)" controlName="enableState" contorlValue="true" optional="true" description="Defines variables can be used in Recurring Sql." label="State Variables" type="xmldom" name="stateVariables" desc=""><properties>
+<property id="1590134100784" value="2" variable="id" alias="cinteger" />
+</properties></property>
+        <property constraints="script(scriptMode:sql,helpContent:flow/help/scripts/RecurringSQL.json,header:false,bodyTemplate:flow/help/scripts/RecurringSQL.sql)" controlName="enableState" contorlValue="true" optional="true" description="The sql will exected on each poll to get incremental data set from database." label="Recurring SQL" type="string" name="repeatSql" desc=""><![CDATA[select cinteger,cbool,clong,cdecimal,cfloat,cdouble,cdate,ctime,cdatetime,cstring 
+from DB_TEST where cinteger > $$id$$ order by cinteger asc
+
+]]></property>
+        <property controlName="enableState" contorlValue="true" enums="all=Load all existing records,new=Only load new records,initial=Only load records by initial value," optional="true" description="Specify how to construct the init state when running on stateful mode." label="Initial Fetch Rule" type="string" value="initial" name="fetchRule" desc=""/>
+        <property desc="Format of output string data." enums="csv=CSV,json=JSON," label="Output Format" type="string" value="csv" name="outputFormat"/>
+        <property desc="The delimiter used to split strings into fields." controlName="outputFormat" enumDyn="true" contorlValue="csv" enums="comma=Comma Separated,tab=Tab Delimited," optional="true" label="Delimiter" type="string" value="comma" name="delimiter"/>
+        <property desc="When enable this propery DIF framework will adjust the interval between batch according time batching setting." hidden="true" label="Dynamic Interval" type="boolean" value="false" name="dynamic_interval"/>
+      </DataSource>
+      <Filter type="expression">
+        <property name="filter-operation" type="string" value="RegExp"/>
+        <property name="filter-argument" type="string" value=""/>
+      </Filter>
+    <Samples type="acquire">
+      <Sample name="" label="* Source Definition" payloadId="SOURCE" mimeType="txt">
+        <Param name="file" label="undefined" value="sample###txt###0" type="file"/>
+      </Sample>
+    </Samples>
+      <Parser name="DelimittedStringToXMLConverter">
+        <Component type="DelimittedStringToXMLConverter" category="converter">
+          <properties>
+            <property desc="Specify whether to adjust the Datetime if daylight savings time is in effect" optional="true" label="Daylight savings" type="boolean" name="daylight" hidden="true" value="false"/>
+            <property desc="Timezone setting for the Datetime field" optional="true" label="Timezone" type="string" value="Asia/Shanghai" name="timezone" hidden="true"/>
+            <property desc="Specify whether to consider the first row as a header" label="Header Row" type="boolean" value="true" name="headerRow"/>
+            <property desc="The delimiter used to split strings into fields" enumDyn="true" enums="comma=Comma Separated,tab=Tab Delimited,," label="Delimiter" type="string" value="comma" name="delimiter"/>
+            <property desc="Optional comma-separated list of field names." optional="true" label="Field Names" type="string" name="fieldNames" constraints="((([a-zA-Z][a-zA-Z0-9_]*)|([a-zA-Z][a-zA-Z0-9_]*:[a-zA-Z]+)),)*((([a-zA-Z][a-zA-Z0-9_]*)|([a-zA-Z][a-zA-Z0-9_]*:[a-zA-Z]+)))?" value="cinteger:integer,cbool:boolean,clong:long,cdecimal:double,cfloat:float,cdouble:double,cdate:date,ctime:time,cdatetime:datetime,cstring:string"/>
+          </properties>
+        </Component>
+        <Mapping type="auto" namespace="http://as" root="SourceEvent" prefix="n">
+          <group id="declare namespace n=&quot;http://as&quot;; /n:root" label="root/" name="root">
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/cinteger" label="cinteger" name="cinteger" value="1" type="integer"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/cbool" label="cbool" name="cbool" value="true" type="boolean"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/clong" label="clong" name="clong" value="1" type="long"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/cdecimal" label="cdecimal" name="cdecimal" value="1" type="double"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/cfloat" label="cfloat" name="cfloat" value="1.11" type="float"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/cdouble" label="cdouble" name="cdouble" value="1.111" type="double"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/cdate" label="cdate" name="cdate" value="2001-10-20" type="date" constraints="yyyy-MM-dd"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/ctime" label="ctime" name="ctime" value="10:20:10" type="time" constraints="HH:mm:ss"/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/cdatetime" label="cdatetime" name="cdatetime" value="2001-10-20 10:20:10.0" type="datetime" constraints="yyyy-MM-dd HH:mm:ss.SSS" locale=""/>
+            <field id="declare namespace n=&quot;http://as&quot;; /n:root/cstring" label="cstring" name="cstring" value="test1" type="string"/>
+          </group>
+        </Mapping>
+      </Parser>
+    </Source>
+    <MappingPaths>
+     <path value="cinteger" label="cinteger"/>
+     <path value="cbool" label="cbool"/>
+     <path value="clong" label="clong"/>
+     <path value="cdecimal" label="cdecimal"/>
+     <path value="cfloat" label="cfloat"/>
+     <path value="cdouble" label="cdouble"/>
+     <path value="cdate" label="cdate"/>
+     <path value="ctime" label="ctime"/>
+     <path value="cdatetime" label="cdatetime"/>
+     <path value="cstring" label="cstring"/>
+    </MappingPaths>
+    <GlobalProperties><![CDATA[
+[]
+    ]]>
+    </GlobalProperties>
+    <DeletedNamespaces>
+    </DeletedNamespaces>
+    <UserSchemas>
+    </UserSchemas>
+        <View name="Default" desc="">
+        <Rule type="PerEvent"/>
+        <Filters type="expression" relation="AND">
+        </Filters>
+        <Mapping output="xml" type="auto">
+        </Mapping>
+        <Targets>
+           <Target name="Target1" type="FileTarget">
+             <property desc="The file and path name of the target." label="File Path" type="string" name="file" value="$VTBA_HOME/db_source2.txt"/>
+             <property desc="The file encoding. The default is utf-8." constraints="encoding" optional="true" label="File Encoding" type="string" value="UTF-8" name="fileEncoding"/>
+             <property desc="The event type. Only string is supported." hidden="true" enums="string,xml,json,tuple," optional="true" label="Event Type" type="string" value="string" name="eventType"/>
+             <property desc="The file rollover pattern. It can be DATE (default) or SIZE." enumDyn="true" enums="DATE=DATE,SIZE=SIZE," optional="true" label="Rollover Pattern" type="string" value="DATE" name="rolloverPattern"/>
+             <property desc="The file rollover pattern for DATE. The default value is &apos;.&apos;yyyy-MM-dd&apos;.log&apos;. It is ignored for rollover pattern SIZE." controlName="rolloverPattern" contorlValue="DATE" optional="true" label="Date Pattern" type="string" value="&apos;.&apos;yyyy-MM-dd&apos;.log&apos;" name="datePattern"/>
+             <property desc="The maximum file size in byte of rollover pattern SIZE. The default value is 5242880 (5MB). It is ignored for rollover pattern DATE. 0 for single event per file." constraints="min=0, max=10485760, step=1024" controlName="rolloverPattern" contorlValue="SIZE" optional="true" label="Max File Size" type="number" value="5242880" name="maxFileSize" numberType="int"/>
+             <property desc="The maximum number of backup files. The default value is 5." constraints="min=1, max=100, step=1" optional="true" label="Max Backup Index" type="number" value="5" name="maxBackupIndex" numberType="int"/>
+             <property desc="The log4j pattern to write message into file. The default value is %m%n." optional="true" label="Conversion Pattern" type="string" value="%m%n" name="conversionPattern"/>
+             <property desc="Write a header to the target file." optional="true" label="Header" type="string" value="" name="header"/>
+             <property desc="Write a footer to the target file." optional="true" label="Footer" type="string" value="" name="footer"/>
+             <property name="remove_event_wrapper" label="Remove Wrapper" value="false" type="boolean"/>
+             <property name="###parse_to_string###" label="Parse to String" value="false" type="boolean"/>
+             <Mapping output="xml" type="auto" input="xml">
+             </Mapping>
+           </Target>
+        </Targets>
+    </View>
+    <DeploymentSetting>
+      <ServerTag value=""/>
+      <DataSource value="/vitria/m3o/datasource/DefaultDomain/defaultds"/>
+      <QOS value="0"/>
+      <AdvancedProperties>
+        <property componentType="DatabaseSource" batch_size="100" dataflow_throttling_policy="slowdown" batch_time="-1" modelComponentType="DatabaseSource" componentGroup="Source" componentCategory="source" componentName="AS_Source_Source" enable_monitor="true" dataflow_eps_limit="-1" poll_rate="60000"/>
+        <property componentType="DelimittedStringToXMLConverter" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="DelimittedStringToXMLConverter" componentGroup="" componentCategory="converter" componentName="AS_Source_Converter" enable_monitor="true" dataflow_eps_limit="-1" concurrency="0"/>
+        <property componentType="Target1/FileTarget" entry="Default/Target1" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="FileTarget" componentGroup="Default" componentCategory="target" componentName="AS_Views_Default_Targets_Target1_Target" enable_monitor="true" dataflow_eps_limit="-1"/>
+      </AdvancedProperties>
+      <ExceptionCondition act="skip" logException="true" logEvent="true">
+        <Source retry="5" delay="5" timeunit="second"/>
+        <Target retry="5" delay="5" timeunit="second"/>
+      </ExceptionCondition>
+    <Binding><![CDATA[
+{}
+    ]]></Binding>
+    </DeploymentSetting>
+  </ModelInfo>
+</ActivityStreamModel>

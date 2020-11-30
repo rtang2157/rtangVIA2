@@ -1,0 +1,4 @@
+cinteger:integer,cbool:boolean,clong:long,cdecimal:double,cfloat:float,cdouble:double,cdate:date,ctime:time,cdatetime:datetime,cstring:string
+1,true,1,1,1.11,1.111,2001-10-20,10:20:10,2001-10-20 10:20:10.0,test1
+2,false,2,2,2.22,2.222,2002-10-20,10:20:10,2002-10-20 10:20:10.0,test2
+3,false,3,3,3.33,3.333,2003-10-20,10:20:10,2003-10-20 10:20:10.0,test3
