@@ -1,0 +1,22 @@
+{
+  "contents": [
+    {
+      "fileref": "ModelContentFile0",
+      "name": "default"
+    },
+    {
+      "classname": "bytearray",
+      "fileref": "ModelContentFile1",
+      "name": "TypeRegistry"
+    }
+  ],
+  "lastDate": "1606728872523",
+  "owner": "vtbaadmin",
+  "properties": {
+    "_RESOURCE_Description": "Create Model on 11-30",
+    "_RESOURCE_Type": "bpmm",
+    "__references__": "",
+    "modelStatus": "valid",
+    "name": "New1130"
+  }
+}
