@@ -1,0 +1,102 @@
+<ActivityStreamModel description="" name="amqp-azure-2" timezone="Asia/Krasnoyarsk" daylight="false" live="true">
+  <ModelInfo validated="true">
+    <Source>
+      <DataSource type="JMSSource">
+        <property enumDyn="true" enums="org.apache.activemq.jndi.ActiveMQInitialContextFactory,org.jboss.naming.remote.client.InitialContextFactory,com.vitria.jndi.qpid.amqp_1_0.NamingContextFactory," optional="true" label="JNDI Context Factory" type="string" name="initialContextFactory" desc="The JNDI initial context factory class name" value="com.vitria.jndi.qpid.amqp_1_0.NamingContextFactory"/>
+        <property controlName="initialContextFactory" enums="azure=Windows Azure,qpid=QPID Broker," contorlValue="com.vitria.jndi.qpid.amqp_1_0.NamingContextFactory" optional="true" label="AMQP broker" type="string" value="azure" name="provider" desc="AMQP broker"/>
+        <property enumDyn="true" enums="tcp://localhost:61616,http-remoting://localhost:8080,amqps://NAMESPACE.servicebus.windows.net:5671,amqps://localhost:5671/?remote-host%3Ddefault,amqp://localhost:5672/?remote-host%3Ddefault," optional="true" label="JNDI Provider URL" type="string" name="providerURL" desc="The JNDI provider URL" value="amqps://10.101.7.17:5671"/>
+        <property constraints="xmlMap" optional="true" label="JNDI Extra Properties" type="xmldom" name="jndiExtraProperties" desc="Some JNDI providers may need additional key and value pairs. The property is used to define the pairs."/>
+        <property enumDyn="true" enums="ConnectionFactory," label="Connection Factory" type="string" name="connectionFactory" desc="The JMS connection factory JNDI name" value="ConnectionFactory"/>
+        <property label="Destination Name" type="string" name="destinationName" desc="The JMS topic or queue JNDI name" value="ServiceBusDefaultNamespace/smoke_topic"/>
+        <property enums="queue=queue,topic=topic," label="Destination Type" type="string" value="topic" name="destinationType" desc="The destination type is either queue or topic"/>
+        <property enums="AUTO=AUTO,LOCAL=LOCAL,NONE=NONE," optional="true" label="Transaction Support" type="string" value="AUTO" name="transaction" desc="Transaction Support"/>
+        <property optional="true" label="User" type="string" name="user" desc="The JMS system user" value="Administrator"/>
+        <property constraints="password" optional="true" label="Password" type="string" name="password" desc="The JMS system password" value="&lt;j6ThmRYhLWOmxQY3YX5SOmeTTI05@hg&gt;"/>
+        <property controlName="destinationType" contorlValue="topic" optional="true" label="Binding Key" type="string" value="default" name="bindingKey" desc="The QPID subscriber binding key and it is only required when connecting to apache QPID broker through AMQP"/>
+        <property controlName="destinationType" contorlValue="topic" label="Durable Subscriber" type="boolean" value="true" name="durable" desc="When subscribing from a topic, set durable to true if you want to set up durable subscribers; set it to false, if want to set up no durable subscribers."/>
+        <property controlName="durable" contorlValue="true" optional="true" label="Subscriber ID" type="string" name="subscriberID" desc="The durable subscriber ID. It is only needed when subscribing to a topic and the durable property is true." value="amqp2"/>
+        <property optional="true" label="Message Selector" type="string" name="messageSelector" desc="A JMS message selector expression"/>
+        <property constraints="file(encode:base64)" optional="true" label="Trust Store File" type="file" name="trustStoreFile" desc="The JKS format java trust store file"><file name="sb.truststore">
+  <uri><![CDATA[base64:///?content=-u3_7QAAAAIAAAABAAAAAgAFbXlrZXkAAAFJWeQk0QAFWC41MDkAAAMSMIIDDjCCAfagAwIBAgIQXt_X49ytxIlF-h0z-3heFTANBgkqhkiG9w0BAQsFADAhMR8wHQYDVQQDDBZBcHBTZXJ2ZXJHZW5lcmF0ZWRTQkNBMB4XDTE0MTAyODEwMTExNloXDTE5MTAyODEwMjExNlowITEfMB0GA1UEAwwWQXBwU2VydmVyR2VuZXJhdGVkU0JDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKct1I-AI4tIihSQ0DHS0Brpf4T5GWMcl8B6hYJ1mX01wbnX_WImPlqUi9R4p2vMAie9sUtRQ_Hq_1glkHH3ILXQ29cdNrWZFsEOM9ZjH0QKzFZ-7huTsdJSuiNarFKjOZ_feSthFJoCylJc5i4J6RTHy86e6q23kRAQFUDBQsy0vTpkYfsoqmJ39VxF5R2jw2K91GmRRLZ5a97Ggqd9d0Oom7iMx2CSDF5YeWjTbezJ6-Vir9WV6Eh2YMQR2PMxTsUncPSUmPGS8Cp-pG7Vno7qNeQnjKguwdnF9WiWCH8jqyTGZKxJsWtatex0c8U8etBK9p9m10DFhQNXfTmArYcCAwEAAaNCMEAwHQYDVR0OBBYEFM7WQAmJPaFEOx5DLiuVuE0jis7vMA8GA1UdEwEB-wQFMAMBAf8wDgYDVR0PAQH-BAQDAgEGMA0GCSqGSIb3DQEBCwUAA4IBAQAbZdxax93gO_ThZQK552X7G2Y59G_-V7acSkG9ySHHuqCYLgk-GX_1IdPD0UEYFR1gYlA0a9AEHrliKx-8Vn1LkZjkTpum8qXxUSyRVTMpgBr76qHlcApUv_Rgsb2cO6JzgVHhA0-njptZh4lUz9FSruPKyE-3_ayb_Ra-8rYF07YvMz54fs6eNveRasNjjv2B8R57ltdTYlSUQINvOLcT9-ONpknGRQ4lqGTbO2VR66UlDGR3XW8pfnv9kNe5gMPLgk6l-ZaDkdn5F7VuJiJuLR3jxpR6bIhcjUpxG5r4HBh8Jq1lgX02hsSKOlyUflgijG81kadDi2OAqWuHAS62zGD66wqkplTd5PaoiYKxrhro-Ng]]></uri>
+</file></property>
+        <property constraints="password" optional="true" label="Trust Store Password" type="string" name="trustStorePassword" desc="The trust store file password" value="&lt;ruAiWPmlwLVsv45WQItG87Os&gt;"/>
+        <property constraints="file(encode:base64)" optional="true" label="Key Store File" type="file" name="keyStoreFile" desc="The JKS format java key store file"/>
+        <property constraints="password" optional="true" label="Key Store Password" type="string" name="keyStorePassword" desc="The key store file password "/>
+        <property optional="true" label="Key Store Key Alias" type="string" name="keyStoreCertAlias" desc="The key alias name of the certificate in the key store"/>
+        <property enumSource="rest:/app.mgr/apps/flow?op=list.lib.module" multiple="true" optional="true" label="Depended Modules" type="string" name="dataflow_module_dependency" desc="The dependent JMS client lib module name" value="amqplib"/>
+      </DataSource>
+      <Filter type="expression">
+        <property name="filter-operation" type="string" value="RegExp"/>
+        <property name="filter-argument" type="string" value=""/>
+      </Filter>
+    <Samples type="acquire">
+      <Sample name="" label="* Source Definition" payloadId="SOURCE" mimeType="txt">
+        <Param name="file" label="undefined" value="sample###txt###0" type="file"/>
+      </Sample>
+    </Samples>
+      <Parser name="XMLToXMLConverter">
+        <Component type="XMLSplitter" category="splitter">
+          <properties>
+            <property constraints="xmlPath" desc="The XPath to match the elements" optional="true" label="Split Path" type="string" name="xpath"/>
+            <property desc="Specify whether to keep the parent for each matched element" optional="true" label="Keep Parent" type="boolean" value="true" name="keepParent"/>
+          </properties>
+        </Component>
+        <Component type="XMLToXMLConverter" category="converter">
+          <properties>
+            <property type="boolean" value="false" name="daylight" hidden="true" label="" desc=""/>
+            <property type="string" value="Asia/Krasnoyarsk" name="timezone" hidden="true" label="" desc=""/>
+            <property hidden="true" type="boolean" value="false" name="remove_event_wrapper" label="" desc=""/>
+          </properties>
+        </Component>
+        <Mapping type="auto" namespace="http://as" root="SourceEvent" prefix="n">
+          <group id="/x" label="x/" name="x">
+          </group>
+        </Mapping>
+      </Parser>
+    </Source>
+    <MappingPaths>
+     <path value="/x" label="x/"/>
+    </MappingPaths>
+    <GlobalProperties><![CDATA[
+[]
+    ]]>
+    </GlobalProperties>
+    <DeletedNamespaces>
+    </DeletedNamespaces>
+    <UserSchemas>
+    </UserSchemas>
+        <View name="Default" desc="">
+        <Rule type="PerEvent"/>
+        <Filters type="expression" relation="AND">
+        </Filters>
+        <Mapping output="xml" type="auto">
+        </Mapping>
+        <Targets>
+           <Target name="Target1" type="ESMSTarget">
+             <property constraints="EPNInputStream" desc="The input stream name of the target EPN. It consists of a project instance name and an input stream name, and uses a colon as the separator (for example, &apos;/home/vtbaadmin/EPN_inputStream$Deployment:inputstreamPort1&apos;)" label="EPN Input Stream" type="string" name="EPNInputStreamName" value="/home/vtbaadmin/Count$Deployment:stream{/home/vtbaadmin/Count$Deployment}EPN@50777E0F-6F71-2449-86AC-17720E7FB889-Out"/>
+             <property name="remove_event_wrapper" label="Remove wrapper" value="false" type="boolean"/>
+             <property name="###parse_to_string###" label="Parse to String" value="false" type="boolean"/>
+             <Mapping output="xml" type="auto" input="xml">
+             </Mapping>
+           </Target>
+        </Targets>
+    </View>
+    <DeploymentSetting>
+      <ServerTag value=""/>
+      <DataSource value="/vitria/m3o/datasource/DefaultDomain/defaultds"/>
+      <QOS value="0"/>
+      <AdvancedProperties>
+        <property componentType="JMSSource" batch_size="1000" dataflow_throttling_policy="slowdown" batch_time="200" modelComponentType="JMSSource" componentGroup="Source" componentCategory="source" componentName="AS_Source_Source" enable_monitor="true" dataflow_eps_limit="-1" poll_rate="1000"/>
+        <property componentType="XMLToXMLConverter" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="XMLToXMLConverter" componentGroup="" componentCategory="converter" componentName="AS_Source_Converter" enable_monitor="true" dataflow_eps_limit="-1" concurrency="0"/>
+        <property componentType="Target1/ESMSTarget" entry="Default/Target1" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="ESMSTarget" componentGroup="Default" componentCategory="target" componentName="AS_Views_Default_Targets_Target1_Target" enable_monitor="true" dataflow_eps_limit="-1"/>
+      </AdvancedProperties>
+      <ExceptionCondition act="skip" logException="true" logEvent="true">
+        <Source retry="5" delay="5" timeunit="second"/>
+        <Target retry="5" delay="5" timeunit="second"/>
+      </ExceptionCondition>
+    <Binding><![CDATA[
+{}
+    ]]></Binding>
+    </DeploymentSetting>
+  </ModelInfo>
+</ActivityStreamModel>

@@ -1,0 +1,29 @@
+{
+  "contents": [
+    {
+      "fileref": "ModelContentFile0",
+      "name": "default"
+    },
+    {
+      "classname": "bytearray",
+      "fileref": "ModelContentFile1",
+      "name": "SOURCE"
+    }
+  ],
+  "lastDate": "1606727686589",
+  "owner": "vtbaadmin",
+  "properties": {
+    "_RESOURCE_Description": "",
+    "_RESOURCE_Type": "asm",
+    "__references__": "",
+    "com.vitria.as.references": "#",
+    "com.vitria.as.samples": "=* Source Definition",
+    "com.vitria.as.size": "0",
+    "live": "true",
+    "modelStatus": "valid",
+    "module_deps": "commonevent,file,jms",
+    "name": "amqp-qpid-1",
+    "sourceType": "FileSource",
+    "vtui:deployedDistinctViews": ""
+  }
+}

@@ -1,0 +1,119 @@
+<ActivityStreamModel description="" name="amqp-qpid-1" timezone="Asia/Krasnoyarsk" daylight="false" live="true">
+  <ModelInfo validated="true">
+    <Source>
+      <DataSource type="FileSource">
+        <property label="File Path" type="string" name="file" desc="The log4j main log file path" value="$VTBA_HOME/file-amqp-1k.txt1"/>
+        <property optional="true" label="Rollover File Pattern" type="string" name="rolloverPattern" desc="The log4j rollover file name pattern. It can be a wildcard pattern that supports &apos;*&apos; and &apos;?&apos; or a regular expression. If it is not defined, it will be the file name suffixed with * (wildcard) or .* (regular expression)"/>
+        <property optional="true" label="Pattern Is Regex" type="boolean" value="false" name="isRegex" desc="By default, the rollover file pattern is wildcard. If it is set to true, the rollover file pattern is regular expression"/>
+        <property optional="true" label="Ignore First Line" type="boolean" value="false" name="ignoreFirstLine" desc="If it is set to true, the first line event of the file will be ignored"/>
+        <property constraints="encoding" optional="true" label="File Encoding" type="string" value="utf-8" name="fileEncoding" desc="The file encoding"/>
+        <property hidden="false" description="Whether to support Multi Line Event" label="Multi Line Event" type="boolean" value="false" name="multiline" desc="Whether to support Multi Line Event"/>
+        <property controlName="multiline" contorlValue="true" description="Whether to support Nested Delimiter" label="Nested Delimiter" type="boolean" value="false" name="nesteddel" desc="Whether to support Nested Delimiter"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="Max Number of Characters in Event" label="Max Event Length" type="number" value="1000" name="maxCharacterNum" desc="Max Number of Characters in Event" numberType="int"/>
+        <property controlName="multiline" contorlValue="true" description="Case Sensitive of Delimiters" label="Case Sensitive" type="boolean" value="true" name="caseSensitive" desc="Case Sensitive of Delimiters"/>
+        <property controlName="multiline" contorlValue="true" optional="true" label="Keep CRLF" type="boolean" value="false" name="keepcrlf" desc="Whether preserve CRLF in the event during runtime"/>
+        <property constraints="xmlMap(columnlabel1:Start, columnlabel2:End)" controlName="multiline" contorlValue="true" optional="true" description="The Special Literal Pair" label="Special Literal" type="xmldom" name="specialLiteral" desc="The start and end Special Literal Pair"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="The start Comment String" label="Start Comment" type="string" name="startComment" desc="The start Comment String"/>
+        <property controlName="multiline" contorlValue="true" optional="true" description="The end Comment String" label="End Comment" type="string" name="endComment" desc="The end Comment String"/>
+        <property controlName="multiline" contorlValue="true" optional="true" label="Escaped Character" type="string" name="escapedCharacter" desc="The Escaped Character when search Special Literal and Comment"/>
+        <property controlName="multiline" contorlValue="true" label="Start Delimiter" type="boolean" value="true" name="hasStartdel" desc="Select True if need Start Delimiter"/>
+        <property controlName="hasStartdel" contorlValue="true" optional="true" label="Delimiter String" type="string" name="startdel" desc="Start Delimiter String"/>
+        <property controlName="hasStartdel" contorlValue="true" description="Include Start Delimiter in Event" label="Include" type="boolean" value="true" name="startdelInclude" desc="Include Start Delimiter in Event"/>
+        <property controlName="hasStartdel" contorlValue="true" description="Support regular expression as Start Delimiter" label="Regular Expression" type="boolean" value="false" name="startdelReg" desc="Support regular expression as Start Delimiter"/>
+        <property controlName="multiline" contorlValue="true" label="End Delimiter" type="boolean" value="true" name="hasEnddel" desc="Select True if need End Delimiter"/>
+        <property controlName="hasEnddel" contorlValue="true" optional="true" label="Delimiter String" type="string" name="enddel" desc="End Delimiter String"/>
+        <property controlName="hasEnddel" contorlValue="true" description="Include End Delimiter in Event" label="Include" type="boolean" value="true" name="enddelInclude" desc="Include End Delimiter in Event"/>
+        <property controlName="hasEnddel" contorlValue="true" description="Support regular expression as End Delimiter" label="Regular Expression" type="boolean" value="false" name="enddelReg" desc="Support regular expression as End Delimiter"/>
+      </DataSource>
+      <Filter type="expression">
+        <property name="filter-operation" type="string" value="RegExp"/>
+        <property name="filter-argument" type="string" value=""/>
+      </Filter>
+    <Samples type="acquire">
+      <Sample name="" label="* Source Definition" payloadId="SOURCE" mimeType="txt">
+        <Param name="file" label="undefined" value="sample###txt###0" type="file"/>
+      </Sample>
+    </Samples>
+      <Parser name="XMLToXMLConverter">
+        <Component type="XMLSplitter" category="splitter">
+          <properties>
+            <property constraints="xmlPath" desc="The XPath to match the elements" optional="true" label="Split Path" type="string" name="xpath"/>
+            <property desc="Specify whether to keep the parent for each matched element" optional="true" label="Keep Parent" type="boolean" value="true" name="keepParent"/>
+          </properties>
+        </Component>
+        <Component type="XMLToXMLConverter" category="converter">
+          <properties>
+            <property type="boolean" value="false" name="daylight" hidden="true" label="" desc=""/>
+            <property type="string" value="Asia/Krasnoyarsk" name="timezone" hidden="true" label="" desc=""/>
+            <property hidden="true" type="boolean" value="false" name="remove_event_wrapper" label="" desc=""/>
+          </properties>
+        </Component>
+        <Mapping type="auto" namespace="http://as" root="SourceEvent" prefix="n">
+          <group id="/x" label="x/" name="x">
+          </group>
+        </Mapping>
+      </Parser>
+    </Source>
+    <MappingPaths>
+     <path value="/x" label="x/"/>
+    </MappingPaths>
+    <GlobalProperties><![CDATA[
+[]
+    ]]>
+    </GlobalProperties>
+    <DeletedNamespaces>
+    </DeletedNamespaces>
+    <UserSchemas>
+    </UserSchemas>
+        <View name="Default" desc="">
+        <Rule type="PerEvent"/>
+        <Filters type="expression" relation="AND">
+        </Filters>
+        <Mapping output="xml" type="auto">
+        </Mapping>
+        <Targets>
+           <Target name="Target1dfa" type="JMSTarget">
+             <property enums="org.apache.activemq.jndi.ActiveMQInitialContextFactory,org.jnp.interfaces.NamingContextFactory,com.vitria.jndi.qpid.amqp_1_0.NamingContextFactory," enumDyn="true" optional="true" label="JNDI Context Factory" type="string" name="initialContextFactory" desc="The JNDI initial context factory class name" value="com.vitria.jndi.qpid.amqp_1_0.NamingContextFactory"/>
+             <property enums="azure=Windows Azure,qpid=QPID Broker," contorlValue="com.vitria.jndi.qpid.amqp_1_0.NamingContextFactory" controlName="initialContextFactory" optional="true" label="AMQP broker" type="string" value="qpid" name="provider" desc=""/>
+             <property enums="tcp://localhost:61616,jnp://localhost:1099,amqps://NAMESPACE.servicebus.windows.net:5671,amqps://localhost:5671/?remote-host%3Ddefault,amqp://localhost:5672/?remote-host%3Ddefault," enumDyn="true" optional="true" label="JNDI Provider URL" type="string" name="providerURL" desc="The JNDI provider URL" value="amqp://10.101.7.33:5672"/>
+             <property constraints="xmlMap" optional="true" label="JNDI Extra Properties" type="xmldom" name="jndiExtraProperties" desc="Some JNDI providers may need additional keys and value pairs. The property is used to define the pairs."/>
+             <property enums="ConnectionFactory," enumDyn="true" label="Connection Factory" type="string" name="connectionFactory" desc="The JMS connection factory JNDI name" value="ConnectionFactory"/>
+             <property label="Destination Name" type="string" name="destinationName" desc="The JMS topic or queue JNDI name" value="smoke_queue"/>
+             <property enums="queue=queue,topic=topic," label="Destination Type" type="string" value="queue" name="destinationType" desc="The destination type is either queue or topic"/>
+             <property contorlValue="topic" controlName="destinationType" optional="true" label="Routing Key" type="string" value="default" name="routingKey" desc=""/>
+             <property enums="AUTO=AUTO,LOCAL=LOCAL,NONE=NONE," optional="true" label="Transaction Support" type="string" value="AUTO" name="transaction" desc=""/>
+             <property optional="true" label="User" type="string" name="user" desc="The JMS system user" value="admin"/>
+             <property constraints="password" optional="true" label="Password" type="string" name="password" desc="The JMS system password" value="&lt;8EsFA4QDc6NQRsLIFkuNNnUPZa&gt;"/>
+             <property optional="true" label="Persistent" type="boolean" value="false" name="persistent" desc="Specify whether to publish a persistent JMS message to the queue or topic"/>
+             <property constraints="file(encode:base64)" optional="true" label="Trust Store File" type="file" name="trustStoreFile" desc=""/>
+             <property constraints="password" optional="true" label="Trust Store Password" type="string" name="trustStorePassword" desc=""/>
+             <property constraints="file(encode:base64)" optional="true" label="Key Store File" type="file" name="keyStoreFile" desc=""/>
+             <property constraints="password" optional="true" label="Key Store Password" type="string" name="keyStorePassword" desc=""/>
+             <property optional="true" label="Key Store key Alias" type="string" name="keyStoreCertAlias" desc=""/>
+             <property multiple="true" enumSource="rest:/app.mgr/apps/flow?op=list.lib.module" optional="true" label="Depended Modules" type="string" name="dataflow_module_dependency" desc="The dependent JMS client lib module name" value="amqplib"/>
+             <property name="remove_event_wrapper" label="Remove wrapper" value="false" type="boolean"/>
+             <property name="###parse_to_string###" label="Parse to String" value="false" type="boolean"/>
+             <Mapping output="xml" type="auto" input="xml">
+             </Mapping>
+           </Target>
+        </Targets>
+    </View>
+    <DeploymentSetting>
+      <ServerTag value=""/>
+      <DataSource value="/vitria/m3o/datasource/DefaultDomain/defaultds"/>
+      <QOS value="0"/>
+      <AdvancedProperties>
+        <property componentType="FileSource" batch_size="1000" dataflow_throttling_policy="slowdown" batch_time="200" modelComponentType="FileSource" componentGroup="Source" componentCategory="source" componentName="AS_Source_Source" enable_monitor="true" dataflow_eps_limit="-1" poll_rate="1000"/>
+        <property componentType="XMLToXMLConverter" dataflow_throttling_policy="slowdown" buffer_size="1000" modelComponentType="XMLToXMLConverter" componentGroup="" componentCategory="converter" componentName="AS_Source_Converter" enable_monitor="true" dataflow_eps_limit="-1" concurrency="0"/>
+        <property componentType="Target1dfa/JMSTarget" entry="Default/Target1dfa" batch_size="-1" dataflow_throttling_policy="slowdown" buffer_size="1000" batch_time="-1" modelComponentType="JMSTarget" componentGroup="Default" componentCategory="target" componentName="AS_Views_Default_Targets_Target1dfa_Target" enable_monitor="true" dataflow_eps_limit="-1"/>
+      </AdvancedProperties>
+      <ExceptionCondition act="skip" logException="true" logEvent="true">
+        <Source retry="5" delay="5" timeunit="second"/>
+        <Target retry="5" delay="5" timeunit="second"/>
+      </ExceptionCondition>
+    <Binding><![CDATA[
+{}
+    ]]></Binding>
+    </DeploymentSetting>
+  </ModelInfo>
+</ActivityStreamModel>
