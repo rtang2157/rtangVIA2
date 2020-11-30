@@ -1,0 +1,25 @@
+<ActivityStreamModel description="" name="as0520" timezone="Asia/Shanghai" daylight="false" is_init="false">
+  <ModelInfo validated="false">
+    <DataSource category="FileUpload" untyped="true" name="file" label="p1.txt" type="FileUpload">
+      <Param name="file" label="Upload File" value="p1.txt###text/plain###1840" type="file" binding="" encoding="utf-8"/>
+      <Param name="encode" label="Encoding*" value="utf-8" type="enumerations" binding=""/>
+    </DataSource>
+    <Samples>
+      <Sample name="" label="p1.txt" payloadId="SOURCE" fileName="vtbaadmin-d4d3a896-48a1-4912-826b-147c4a2ea941_0" mimeType="text/plain">
+        <Param name="file" label="Upload File" value="p1.txt###text/plain###1840" type="file" encoding="utf-8"/>
+        <Param name="encode" label="Encoding*" value="utf-8" type="enumerations"/>
+      </Sample>
+    </Samples>
+    <DeletedNamespaces>
+    </DeletedNamespaces>
+    <UserSchemas>
+    </UserSchemas>
+    <Parser type="line" tokenizer="delimited">
+      <Configuration headerRow="true" delimiter="comma"/>
+    </Parser>
+    <Views>
+    </Views>
+    <Markups>
+    </Markups>
+  </ModelInfo>
+</ActivityStreamModel>
