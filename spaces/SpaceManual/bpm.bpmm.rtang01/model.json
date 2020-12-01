@@ -1,0 +1,22 @@
+{
+  "contents": [
+    {
+      "fileref": "ModelContentFile0",
+      "name": "default"
+    },
+    {
+      "classname": "bytearray",
+      "fileref": "ModelContentFile1",
+      "name": "TypeRegistry"
+    }
+  ],
+  "lastDate": "1606792082550",
+  "owner": "vtbaadmin",
+  "properties": {
+    "_RESOURCE_Description": "new",
+    "_RESOURCE_Type": "bpmm",
+    "__references__": "",
+    "modelStatus": "valid",
+    "name": "rtang01"
+  }
+}
