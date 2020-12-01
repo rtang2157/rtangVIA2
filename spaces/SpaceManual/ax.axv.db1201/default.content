@@ -1,0 +1,69 @@
+<AnalyticsExplorerView description="v2" name="db1201" is_init="false">
+  <ModelInfo validated="true" nextPageId="2">
+    <GlobalDSRSetting enabled="false">
+    </GlobalDSRSetting>
+    <GlobalProperties>
+    </GlobalProperties>
+    <GlobalThemeSetting>
+        <SelectedTheme theme="{&quot;id&quot;:null,&quot;name&quot;:&quot;Vitria Default Theme&quot;,&quot;label&quot;:&quot;Vitria Default Theme&quot;}"/>
+        <TileOpacity opacity="0.8"/>
+        <NoTileSpacing value="false"/>
+    </GlobalThemeSetting>
+    <I18NTab>
+        <name value="default"/>
+    </I18NTab>
+    <TabNavSetting visible="true"></TabNavSetting>
+    <DWRSetting disable="false"></DWRSetting>
+    <Page id="1" name="Default" title="Default" desc="" tabNavVisible="true" panelposition="right" panelstatus="closed" className="">
+    <HelpContent><![CDATA[]]></HelpContent>
+      <PageProperties>
+      </PageProperties>
+      <Layout type="10" numRow="19" numCol="41" count="3" templateType ="7" screenHeight ="NaN" renderType ="null" positions="[{&quot;data_col&quot;:1,&quot;data_row&quot;:1,&quot;data_sizex&quot;:80,&quot;data_sizey&quot;:72,&quot;id&quot;:0},{&quot;data_col&quot;:81,&quot;data_row&quot;:1,&quot;data_sizex&quot;:40,&quot;data_sizey&quot;:36,&quot;id&quot;:1},{&quot;data_col&quot;:81,&quot;data_row&quot;:37,&quot;data_sizex&quot;:40,&quot;data_sizey&quot;:36,&quot;id&quot;:2}]" unitSize= "undefined" viewRows="72" viewCols="120"/>
+      <Tile name="Main Tile" title="Main Tile" desc="" hideEmptyTile="false" previewSize="15" type="Independent" style="small" sampleData="false" className="" parentSelect="false" advancedConfig="null" advancedDisable="false" allowFullscreen="false">
+      </Tile>
+      <Tile name="Tile1" title="Tile1" desc="" hideEmptyTile="false" previewSize="15" type="Independent" style="small" sampleData="false" className="" parentSelect="false" advancedConfig="null" advancedDisable="false" allowFullscreen="false">
+      </Tile>
+      <Tile name="Tile2" title="Tile2" desc="" hideEmptyTile="false" previewSize="15" type="Independent" style="small" sampleData="false" className="" parentSelect="false" advancedConfig="null" advancedDisable="false" allowFullscreen="false">
+      </Tile>
+    </Page>
+    <DataFlow showFooter="true">
+      <Version type="Aggregate" version="1"/>
+      <Version type="Columns" version="1"/>
+      <Version type="DynPivot" version="1"/>
+      <Version type="Filter" version="1"/>
+      <Version type="Footer" version="1"/>
+      <Version type="GeoJsonOverlay" version="1"/>
+      <Version type="RestQuery" version="1"/>
+      <Version type="Group" version="1"/>
+      <Version type="Header" version="1"/>
+      <Version type="GeoHeatMapOverlay" version="1"/>
+      <Version type="Join" version="1"/>
+      <Version type="LocalStore" version="2"/>
+      <Version type="MenuBar" version="1"/>
+      <Version type="ModelMeta" version="1"/>
+      <Version type="ToolbarOverlay" version="3"/>
+      <Version type="WidgetOverlay" version="1"/>
+      <Version type="Pivot" version="1"/>
+      <Version type="Widget" version="1"/>
+      <Version type="PortIn" version="1"/>
+      <Version type="PortOut" version="1"/>
+      <Version type="GlobalProperty" version="3"/>
+      <Version type="PutData" version="1"/>
+      <Version type="ResourceMeta" version="1"/>
+      <Version type="Rows" version="1"/>
+      <Version type="UserScript" version="2"/>
+      <Version type="Sort" version="1"/>
+      <Version type="SQL" version="2"/>
+      <Version type="SQLConnect" version="1"/>
+      <Version type="DwrMessage" version="1"/>
+      <Version type="GeoEditableOverlay" version="1"/>
+      <Version type="GeoOverlay" version="2"/>
+      <Version type="TextAnnotations" version="1"/>
+      <Version type="Tile" version="1"/>
+      <Version type="Union" version="1"/>
+      <Version type="ScriptVariable" version="1"/>
+    </DataFlow>
+    <DashboardPlugins>
+    </DashboardPlugins>
+  </ModelInfo>
+</AnalyticsExplorerView>
